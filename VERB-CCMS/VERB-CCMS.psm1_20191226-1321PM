@@ -1,0 +1,52 @@
+# VERB-CCMS.psm1
+
+
+  <#
+  .SYNOPSIS
+  VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
+  .NOTES
+  Version     : 1.0.0.0
+  Author      : Todd Kadrie
+  Website     :	https://www.toddomation.com
+  Twitter     :	@tostka
+  CreatedDate : 12/26/2019
+  FileName    : VERB-CCMS.psm1
+  License     : MIT
+  Copyright   : (c) 12/26/2019 Todd Kadrie
+  Github      : https://github.com/tostka
+  AddedCredit : REFERENCE
+  AddedWebsite:	REFERENCEURL
+  AddedTwitter:	@HANDLE / http://twitter.com/HANDLE
+  REVISIONS
+  * 12/26/2019 - 1.0.0.0
+  * 10:55 AM 12/6/2019 Connect-CCMS: added suffix to TitleBar tag for non-TOR tenants, also config'd a central tab vari
+  * 5:14 PM 11/27/2019 repl $MFA code with get-TenantMFARequirement
+  * 1:07 PM 11/25/2019 added *tol/*tor/*cmw alias variants for connect & reconnect
+  * 7:58 PM 11/20/2019 spliced over current updated MFA supporting verb-EXO content adapted to CCMS
+  * 12:58 PM 6/5/2019 updated the echo from Exo -> Security & Compliance
+  * 1:02 PM 11/7/2018 added Disconnect-PssBroken
+  # 9:04 PM 7/11/2018 synced to tsksid-incl-ServerApp.ps1
+  .DESCRIPTION
+  VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
+  .EXAMPLE
+  .EXAMPLE
+  .LINK
+  https://github.com/tostka/verb-CCMS
+  #>
+
+
+#Get public and private function definition files.
+$functionFolders = @('Public', 'Internal', 'Classes') ;
+ForEach ($folder in $functionFolders) {
+    $folderPath = Join-Path -Path $PSScriptRoot -ChildPath $folder ;
+    If (Test-Path -Path $folderPath) {
+        Write-Verbose -Message "Importing from $folder" ;
+        $functions = Get-ChildItem -Path $folderPath -Filter '*.ps1'  ;
+        ForEach ($function in $functions) {
+            Write-Verbose -Message "  Importing $($function.BaseName)" ;
+            . $($function.FullName) ;
+        } ;
+    } ;
+} ;
+$publicFunctions = (Get-ChildItem -Path "$PSScriptRoot\Public" -Filter '*.ps1').BaseName ;
+Export-ModuleMember -Function $publicFunctions ;
