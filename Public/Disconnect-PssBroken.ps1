@@ -1,7 +1,7 @@
-if(!(test-path function:\Disconnect-PssBroken)) { 
+if(!(test-path function:\Disconnect-PssBroken)) {
     #*------v Function Disconnect-PssBroken v------
     Function Disconnect-PssBroken {
-        <# 
+        <#
         .SYNOPSIS
         Disconnect-PssBroken - Remove all local broken PSSessions
         .NOTES
@@ -18,9 +18,8 @@ if(!(test-path function:\Disconnect-PssBroken)) {
         .OUTPUTS
         None. Returns no objects or output.
         .EXAMPLE
-        Disconnect-PssBroken ; 
+        Disconnect-PssBroken ;
         .LINK
         #>
-        Get-PsSession |?{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
+        Get-PsSession |Where-Object{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
     } ; #*------^ END Function Disconnect-PssBroken ^------
-} ; 

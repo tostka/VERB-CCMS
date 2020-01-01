@@ -37,7 +37,7 @@ Function Reconnect-CCMS {
     #if ($CCMSSession.state -eq 'Broken' -or !$CCMSSession) {Disconnect-CCMS; Start-Sleep -Seconds 3; Connect-CCMS} ;     
     # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
     #if (($CCMSSession.state -ne 'Opened' -AND $CCMSSession.Availability -ne 'Available') -or !$CCMSSession) {
-    if( !(Get-PSSession|?{($_.ComputerName -match $rgxCCMSPsHostName) -AND ($_.State -eq 'Opened') -AND ($_.Availability -eq 'Available')}) ){
+    if( !(Get-PSSession|Where-Object{($_.ComputerName -match $rgxCCMSPsHostName) -AND ($_.State -eq 'Opened') -AND ($_.Availability -eq 'Available')}) ){
       if($showdebug){ write-host -foregroundcolor yellow "$((get-date).ToString('HH:mm:ss')):Reconnecting:No existing PSSESSION matching $($rgxCCMSPsHostName) with valid Open/Availability:$((Get-PSSession|?{$_.ComputerName -match $rgxCCMSPsHostName}| ft -a State,Availability |out-string).trim())" } ; 
       Disconnect-CCMS; Disconnect-PssBroken ;Start-Sleep -Seconds 3; 
       if(!$Credential){
@@ -48,7 +48,7 @@ Function Reconnect-CCMS {
       
   } ;     
 }#*------^ END Function Reconnect-CCMS ^------
-if(!(get-alias | ?{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;
+if(!(get-alias | Where-Object{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;
 function rccmstol {Reconnect-CCMS -cred $credO365TOLSID};
 function rccmscmw {Reconnect-CCMS -cred $credO365CMWCSID};
 function rccmstor {Reconnect-CCMS -cred $credO365TORSID};
