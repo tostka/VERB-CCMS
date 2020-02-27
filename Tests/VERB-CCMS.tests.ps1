@@ -1,4 +1,4 @@
-$ModuleName = Split-Path (Resolve-Path "$PSScriptRoot\..\" ) -Leaf
+ï»¿$ModuleName = Split-Path (Resolve-Path "$PSScriptRoot\..\" ) -Leaf
 $ModuleManifest = Resolve-Path "$PSScriptRoot\..\$ModuleName\$ModuleName.psd1"
 $here = (Split-Path -Parent $MyInvocation.MyCommand.Path).Replace('tests', '')
 $scriptsModules = Get-ChildItem $here -Include *.psd1, *.psm1, *.ps1 -Exclude *.tests.ps1 -Recurse
@@ -27,7 +27,7 @@ Describe 'Module Information' -Tags 'Command'{
             $Script:Manifest.RootModule | Should -Be "$ModuleName.psm1"
         }
         It 'Valid Manifest GUID' {
-            $Script:Manifest.Guid | Should -Be "Please Paste here your module Guid - Test-ModuleManifest '<ModulePath>' | Select-Object -ExpandProperty Guid"
+            $Script:Manifest.Guid | Should -Be "057a7f09-79e4-4db7-af1c-02db0c702b5e"
         }
     }
 
@@ -62,7 +62,7 @@ Describe 'General - Testing all scripts and modules against the Script Analyzer 
 			'*.psd1' { $typeTesting = 'Manifest' } 
 		}
 
-		Context "Checking $typeTesting – $($scriptModule) - conforms to Script Analyzer Rules" {
+		Context "Checking $typeTesting ï¿½ $($scriptModule) - conforms to Script Analyzer Rules" {
 			<# stock code
             forEach ($scriptAnalyzerRule in $scriptAnalyzerRules) {
 				It "Script Analyzer Rule $scriptAnalyzerRule" {
@@ -80,8 +80,8 @@ Describe 'General - Testing all scripts and modules against the Script Analyzer 
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUHC1Yi26g8QyK1yVAwwoEu5eZ
-# 2a6gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUszFMv6btMpsjNjpeBEgFWsTn
+# 6aSgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -96,9 +96,9 @@ Describe 'General - Testing all scripts and modules against the Script Analyzer 
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQDyao0
-# 9xj2LxJWNI8akL3kf4xJ2DANBgkqhkiG9w0BAQEFAASBgChI08LG/2/iD6LB7JFh
-# QhAGtM1Ezh3/QRhw8mVV2b1QrMsODV1O9tSmoOQHkSgwYyn6Lprs9GJrDmowPrTh
-# iLn98ISaxqx6Wp7ZW17DZGAbqfM5dss6ZR6vSkXqfCwRXVWchCvHuZdD5HGDjK0s
-# VkuKCbP+UE2xLR12vsHeORWw
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSSQ1Q2
+# xRJUfjD+Fc4wi2dmW5YngDANBgkqhkiG9w0BAQEFAASBgIE89lXXhVz710NkiXfF
+# i5AH7AbU/4OFsFscun5Dh7DdKtzP4gUF5i7NPsYBvOTSqf/SV5VTqi4H+GafoUD7
+# 9jXId4VjLW5tB5xVaenvGuNKtUEiIV5RhWIt0BoBZaY37Ru2tEYtl19DzNLsVgwo
+# x5qsisWFeFti0Exqt0jOBTx4
 # SIG # End signature block

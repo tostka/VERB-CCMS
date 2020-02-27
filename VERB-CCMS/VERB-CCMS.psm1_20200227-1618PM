@@ -1,11 +1,10 @@
-﻿# VERB-CCMS.psm1
-
+# VERB-CCMS.psm1
 
 <#
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.2.0
+Version     : 1.0.0.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -34,7 +33,6 @@ VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 https://github.com/tostka/verb-CCMS
 #>
 
-
 $script:ModuleRoot = $PSScriptRoot ;
 $script:ModuleVersion = (Import-PowerShellDataFile -Path (get-childitem $script:moduleroot\*.psd1).fullname).moduleversion ;
 
@@ -43,25 +41,8 @@ $script:ModuleVersion = (Import-PowerShellDataFile -Path (get-childitem $script:
 Export-ModuleMember -Alias * ;
 
 
-
-#*------v cccmsCMW.ps1 v------
-function cccmsCMW {Connect-CCMS -cred $credO365CMWCSID}
-
-#*------^ cccmsCMW.ps1 ^------
-
-#*------v cccmsTOL.ps1 v------
-function cccmsTOL {Connect-CCMS -cred $credO365TOLSID}
-
-#*------^ cccmsTOL.ps1 ^------
-
-#*------v cccmsTOR.ps1 v------
-function cccmsTOR {Connect-CCMS -cred $credO365TORSID}
-
-#*------^ cccmsTOR.ps1 ^------
-
-#*------v Connect-CCMS.ps1 v------
 Function Connect-CCMS {
-    <#
+    <# 
     .SYNOPSIS
     Connect-CCMS - Establish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
     .NOTES
@@ -89,57 +70,57 @@ Function Connect-CCMS {
     Connect-CCMS
     Connect using defaults, and leverage any pre-set $global:o365cred variable
     .EXAMPLE
-    Connect-CCMS -CommandPrefix exo -credential (Get-Credential -credential logon@DOMAIN.com)  ;
+    Connect-CCMS -CommandPrefix exo -credential (Get-Credential -credential logon@DOMAIN.com)  ; 
     Connect an explicit credential, and use 'exolab' as the cmdlet prefix
     .LINK
     https://docs.microsoft.com/en-us/powershell/exchange/office-365-scc/connect-to-scc-powershell/connect-to-scc-powershell?view=exchange-ps
 #>
 
    Param(
-        [Parameter(HelpMessage="Use Proxy-Aware SessionOption settings [-ProxyEnabled]")][boolean]$ProxyEnabled = $False,
+        [Parameter(HelpMessage="Use Proxy-Aware SessionOption settings [-ProxyEnabled]")][boolean]$ProxyEnabled = $False,  
         [Parameter(HelpMessage="[noun]-PREFIX[command] PREFIX string for clearly marking cmdlets sourced in this connection [-CommandPrefix exolab]")][string]$CommandPrefix = 'exo',
         [Parameter(HelpMessage="Credential to use for this connection [-credential [credential obj variable]")][System.Management.Automation.PSCredential]$Credential = $global:credo365TORSID,
         [Parameter(HelpMessage="Debugging Flag [-showDebug]")]
         [switch] $showDebug
-    ) ;
-
+    ) ; 
+    
     # shift to pulling the $MFA auto by splitting the credential and checking the o365_*_OPDomain & o365_$($credVariTag)_MFA global varis
-    $MFA = get-TenantMFARequirement -Credential $Credential ;
-
+    $MFA = get-TenantMFARequirement -Credential $Credential ; 
+    
     # 12:10 PM 3/15/2017 disable prefix spec, unless actually blanked (e.g. centrally spec'd in profile).
-    if(!$CommandPrefix){
-      $CommandPrefix='cc' ;
+    if(!$CommandPrefix){ 
+      $CommandPrefix='cc' ; 
       write-verbose -verbose:$true  "(asserting Prefix:$($CommandPrefix)" ;
-    } ;
+    } ; 
 
-    $sTitleBarTag="SOL" ;
+    $sTitleBarTag="SOL" ; 
     if($Credential){
         switch -regex ($Credential.username.split('@')[1]){
             "toro\.com" {
                 # leave untagged
-             }
+             } 
              "torolab\.com" {
                 $sTitleBarTag = $sTitleBarTag + "tlab"
-            }
+            } 
             "(charlesmachineworks\.onmicrosoft\.com|charlesmachine\.works)" {
                 $sTitleBarTag = $sTitleBarTag + "cmw"
-            }
-        } ;
-    } ;
-
+            } 
+        } ; 
+    } ; 
+    
     $ImportPSSessionProps = @{
         AllowClobber        = $true ;
         DisableNameChecking = $true ;
-        Prefix              = $CommandPrefix ;
+        Prefix              = $CommandPrefix ; 
         ErrorAction         = 'Stop' ;
     } ;
-
+    
     if($MFA){
-        #$CreateEXOPSSession = (Get-ChildItem -Path $Env:LOCALAPPDATA\Apps\2.0* -Filter CreateExoPSSession.ps1 -Recurse -ErrorAction SilentlyContinue -Force | Select -Last 1).DirectoryName ;
+        #$CreateEXOPSSession = (Get-ChildItem -Path $Env:LOCALAPPDATA\Apps\2.0* -Filter CreateExoPSSession.ps1 -Recurse -ErrorAction SilentlyContinue -Force | Select -Last 1).DirectoryName ; 
         <# 2:37 PM 11/12/2019 LYN-8DCZ1G2 $CreateEXOPSSession returns:
         C:\Users\kadritss\AppData\Local\Apps\2.0\D8EN8V94.BC1\KNNJHR2J.BBV\micr..tion_5329ec537c0b4b5c_0010.0000_9fc624cd0073956e
         #>
-
+        
         try {
             $ExoPSModuleSearchProperties = @{
                 Path        = "$($env:LOCALAPPDATA)\Apps\2.0\" ;
@@ -147,8 +128,8 @@ Function Connect-CCMS {
                 Recurse     = $true ;
                 ErrorAction = 'Stop' ;
             } ;
-
-            if($showDebug){write-host -foregroundcolor green "Get-ChildItem w`n$(($ExoPSModuleSearchProperties|out-string).trim())" } ;
+            
+            if($showDebug){write-host -foregroundcolor green "Get-ChildItem w`n$(($ExoPSModuleSearchProperties|out-string).trim())" } ; 
             $ExoPSModule =  Get-ChildItem @ExoPSModuleSearchProperties |
                             Where-Object {$_.FullName -notmatch '_none_'} |
                             Sort-Object LastWriteTime |
@@ -162,7 +143,7 @@ Function Connect-CCMS {
                     Author          = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
                     CompanyName     = 'jb365' ;
             } ;
-            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewExoPSModuleManifestProps|out-string).trim())" } ;
+            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewExoPSModuleManifestProps|out-string).trim())" } ; 
             New-ModuleManifest @NewExoPSModuleManifestProps ;
             Import-Module $ExoPSModule.FullName -Global -ErrorAction:Stop ;
             $CreateExoPSSessionPs1 = Get-ChildItem -Path $ExoPSModule.PSParentPath -Filter 'CreateExoPSSession.ps1' ;
@@ -179,14 +160,14 @@ Function Connect-CCMS {
                     Author          = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
                     CompanyName     = 'jb365' ;
             } ;
-            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewCreateExoPSSessionManifest|out-string).trim())" } ;
+            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewCreateExoPSSessionManifest|out-string).trim())" } ; 
             New-ModuleManifest @NewCreateExoPSSessionManifest ;
             Import-Module "$($ExoPSModule.PSParentPath)\CreateExoPSSession.psm1" -Global -ErrorAction:Stop ;
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
         } ;
-
+        
         try {
             $global:UserPrincipalName = $Credential.Username ;
             $global:ConnectionUri = 'https://ps.compliance.protection.outlook.com/PowerShell-LiveId' ;
@@ -201,83 +182,80 @@ Function Connect-CCMS {
                 BypassMailboxAnchoring          = $global:BypassMailboxAnchoring ;
             } ;
             #if ($PSBoundParameters.Credential) {$ExoPSSession['Credential'] = $Credential}
-            if($showDebug){write-host -foregroundcolor green "New-ExoPSSession w`n$(($ExoPSSession|out-string).trim())" } ;
+            if($showDebug){write-host -foregroundcolor green "New-ExoPSSession w`n$(($ExoPSSession|out-string).trim())" } ; 
             $ExoPSSession = New-ExoPSSession @ExoPSSession -ErrorAction:Stop ;
-            if($showDebug){write-host -foregroundcolor green "Import-PSSession w`n$(($ImportPSSessionProps|out-string).trim())" } ;
+            if($showDebug){write-host -foregroundcolor green "Import-PSSession w`n$(($ImportPSSessionProps|out-string).trim())" } ; 
             #Import-Module (Import-PSSession $ExoPSSession @ImportPSSessionProps) -Global -DisableNameChecking -ErrorAction:Stop ;
-            # 11:51 AM 11/20/2019 add prefx
+            # 11:51 AM 11/20/2019 add prefx 
             Import-Module (Import-PSSession $ExoPSSession @ImportPSSessionProps) -Prefix $CommandPrefix -Global -DisableNameChecking -ErrorAction:Stop ;
             UpdateImplicitRemotingHandler ;
-
+            
              # I want to see where I connected...
             Add-PSTitleBar $sTitleBarTag ;
-
+        
         } catch {
             Write-Warning -Message "Failed to connect to EXO via the imported EXO PS module.`n`nError message:" ;
             throw $_ ;
-        } ;
-
+        } ;   
+        
     } else {
-
+    
         # 9:17 AM 3/15/2017 Connect-CCMS: add quotes around all string/non-boolean/non-int values in the splat
         $CCMSsplat=@{
             ConfigurationName="Microsoft.Exchange" ;
             ConnectionUri="https://ps.compliance.protection.outlook.com/powershell-liveid/" ;
             Authentication="Basic" ;
             AllowRedirection=$true;
-        } ;
+        } ; 
         # just use the passed $Credential vari
         $EXOsplat.Add("Credential",$Credential);
-
-
+            
+       
         If ($ProxyEnabled) {
             $CCMSsplat.Add("sessionOption",$(New-PsSessionOption -ProxyAccessType IEConfig -ProxyAuthentication basic));
-            Write-Host "Connecting to Security & Compliance via Proxy"  ;
+            Write-Host "Connecting to Security & Compliance via Proxy"  ; 
         } Else {
-            Write-Host "Connecting to Security & Compliance"  ;
-        } ;
-
+            Write-Host "Connecting to Security & Compliance"  ; 
+        } ; 
+        
         Try {
-            #$global:ExoPSSession = New-PSSession @EXOsplat ;
-            $Global:CCMSSession = New-PSSession @CCMSsplat ;
+            #$global:ExoPSSession = New-PSSession @EXOsplat ; 
+            $Global:CCMSSession = New-PSSession @CCMSsplat ; 
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
         } ;
-
+                
         $pltPSS=[ordered]@{
-            Session                 =$Global:CCMSSession
-            Prefix                  =$CommandPrefix ;
-            DisableNameChecking     =$true  ;
-            AllowClobber            =$true ;
+            Session                 =$Global:CCMSSession 
+            Prefix                  =$CommandPrefix ; 
+            DisableNameChecking     =$true  ; 
+            AllowClobber            =$true ; 
             ErrorAction             = 'Stop' ;
-        } ;
+        } ; 
         if($showDebug){
-            write-host -foregroundcolor green "`n$((get-date).ToString('HH:mm:ss')):Import-PSSession w`n$(($pltPSS|out-string).trim())" ;
+            write-host -foregroundcolor green "`n$((get-date).ToString('HH:mm:ss')):Import-PSSession w`n$(($pltPSS|out-string).trim())" ; 
         } ;
 
         Try {
-            #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ;
-            $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ;
+            #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ; 
+            $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ; 
             Add-PSTitleBar 'EXO' ;
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
-        } ;
-    } ;
+        } ; 
+    } ;  
     if($CommandPrefix){ "(Connected to CCMS: Cmds prefixed [verb]-$($CommandPrefix)[Noun])" ; } ;
-
+    
 } ; #*------^ END Function Connect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "cccms"})) {Set-Alias 'cccms' -Value 'Connect-CCMS' ; } ;
+if(!(get-alias | ?{$_.name -like "cccms"})) {Set-Alias 'cccms' -Value 'Connect-CCMS' ; } ;
 function cccmstol {Connect-CCMS -cred $credO365TOLSID};
 function cccmscmw {Connect-CCMS -cred $credO365CMWCSID};
 function cccmstor {Connect-CCMS -cred $credO365TORSID}
 
-#*------^ Connect-CCMS.ps1 ^------
-
-#*------v Disconnect-CCMS.ps1 v------
 Function Disconnect-CCMS {
-    <#
+    <# 
     .SYNOPSIS
     Disconnect-CCMS - Disconnects any PSS to https://ps.outlook.com/powershell/ (cleans up session after a batch or other temp work is done)
     .NOTES
@@ -288,71 +266,59 @@ Function Disconnect-CCMS {
     # 1:18 PM 11/7/2018 added Disconnect-PssBroken
     # 12:42 PM 6/20/2018 ported over from disconnect-exo
     .DESCRIPTION
-    I use this to smoothly cleanup connections.
+    I use this to smoothly cleanup connections. 
     .INPUTS
     None. Does not accepted piped input.
     .OUTPUTS
     None. Returns no objects or output.
     .EXAMPLE
-    Disconnect-CCMS;
+    Disconnect-CCMS; 
     .LINK
     https://social.technet.microsoft.com/Forums/msonline/en-US/f3292898-9b8c-482a-86f0-3caccc0bd3e5/exchange-powershell-monitoring-remote-sessions?forum=onlineservicesexchange
     *---^ END Comment-based Help  ^--- #>
     # 9:25 AM 3/21/2017 getting undefined on the below, pretest them
-    if($Global:CCMSModule){$Global:CCMSModule | Remove-Module -Force ; } ;
-    if($Global:CCMSSession){$Global:CCMSSession | Remove-PSSession ; } ;
+    if($Global:CCMSModule){$Global:CCMSModule | Remove-Module -Force ; } ; 
+    if($Global:CCMSSession){$Global:CCMSSession | Remove-PSSession ; } ; 
     # "https://ps.compliance.protection.outlook.com/powershell-liveid/" ; should still work below
-    Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
-    Disconnect-PssBroken ;
-    Remove-PSTitlebar 'CCMS' ;
+    Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ; 
+    Disconnect-PssBroken ; 
+    Remove-PSTitlebar 'CCMS' ; 
 } ; #*------^ END Function Disconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value 'Disconnect-CCMS' ; }
+if(!(get-alias | ?{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value 'Disconnect-CCMS' ; }
 
-#*------^ Disconnect-CCMS.ps1 ^------
-
-#*------v Disconnect-PssBroken.ps1 v------
-Function Disconnect-PssBroken {
-    <#
-    .SYNOPSIS
-    Disconnect-PssBroken - Remove all local broken PSSessions
-    .NOTES
-    Author: Todd Kadrie
-    Website:	http://tinstoys.blogspot.com
-    Twitter:	http://twitter.com/tostka
-    REVISIONS   :
-    * 12:56 PM 11/7/2f018 fix typo $s.state.value, switched tests to the strings, over values (not sure worked at all)
-    * 1:50 PM 12/8/2016 initial version
-    .DESCRIPTION
-    Disconnect-PssBroken - Remove all local broken PSSessions
-    .INPUTS
-    None. Does not accepted piped input.
-    .OUTPUTS
-    None. Returns no objects or output.
-    .EXAMPLE
-    Disconnect-PssBroken ;
-    .LINK
-    #>
-    Get-PsSession |Where-Object{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
+if(!(test-path function:\Disconnect-PssBroken)) { 
+    #*------v Function Disconnect-PssBroken v------
+    Function Disconnect-PssBroken {
+        <# 
+        .SYNOPSIS
+        Disconnect-PssBroken - Remove all local broken PSSessions
+        .NOTES
+        Author: Todd Kadrie
+        Website:	http://tinstoys.blogspot.com
+        Twitter:	http://twitter.com/tostka
+        REVISIONS   :
+        * 12:56 PM 11/7/2f018 fix typo $s.state.value, switched tests to the strings, over values (not sure worked at all)
+        * 1:50 PM 12/8/2016 initial version
+        .DESCRIPTION
+        Disconnect-PssBroken - Remove all local broken PSSessions
+        .INPUTS
+        None. Does not accepted piped input.
+        .OUTPUTS
+        None. Returns no objects or output.
+        .EXAMPLE
+        Disconnect-PssBroken ; 
+        .LINK
+        #>
+        Get-PsSession |?{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
+    } ; #*------^ END Function Disconnect-PssBroken ^------
 }
 
-#*------^ Disconnect-PssBroken.ps1 ^------
 
-#*------v rccmsCMW.ps1 v------
-function rccmsCMW {Reconnect-CCMS -cred $credO365CMWCSID}
 
-#*------^ rccmsCMW.ps1 ^------
 
-#*------v rccmsTOL.ps1 v------
-function rccmsTOL {Reconnect-CCMS -cred $credO365TOLSID}
 
-#*------^ rccmsTOL.ps1 ^------
 
-#*------v rccmsTOR.ps1 v------
-function rccmsTOL{reconnect-CCMS -cred $credO365TOLSID}
 
-#*------^ rccmsTOR.ps1 ^------
-
-#*------v Reconnect-CCMS.ps1 v------
 Function Reconnect-CCMS {
     <# 
     .SYNOPSIS
@@ -391,7 +357,7 @@ Function Reconnect-CCMS {
     #if ($CCMSSession.state -eq 'Broken' -or !$CCMSSession) {Disconnect-CCMS; Start-Sleep -Seconds 3; Connect-CCMS} ;     
     # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
     #if (($CCMSSession.state -ne 'Opened' -AND $CCMSSession.Availability -ne 'Available') -or !$CCMSSession) {
-    if( !(Get-PSSession|Where-Object{($_.ComputerName -match $rgxCCMSPsHostName) -AND ($_.State -eq 'Opened') -AND ($_.Availability -eq 'Available')}) ){
+    if( !(Get-PSSession|?{($_.ComputerName -match $rgxCCMSPsHostName) -AND ($_.State -eq 'Opened') -AND ($_.Availability -eq 'Available')}) ){
       if($showdebug){ write-host -foregroundcolor yellow "$((get-date).ToString('HH:mm:ss')):Reconnecting:No existing PSSESSION matching $($rgxCCMSPsHostName) with valid Open/Availability:$((Get-PSSession|?{$_.ComputerName -match $rgxCCMSPsHostName}| ft -a State,Availability |out-string).trim())" } ; 
       Disconnect-CCMS; Disconnect-PssBroken ;Start-Sleep -Seconds 3; 
       if(!$Credential){
@@ -402,18 +368,16 @@ Function Reconnect-CCMS {
       
   } ;     
 }#*------^ END Function Reconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;
+if(!(get-alias | ?{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;
 function rccmstol {Reconnect-CCMS -cred $credO365TOLSID};
 function rccmscmw {Reconnect-CCMS -cred $credO365CMWCSID};
 function rccmstor {Reconnect-CCMS -cred $credO365TORSID}
 
-#*------^ Reconnect-CCMS.ps1 ^------
-
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMQeYuX72FVhC7SRR83b8h/gc
-# dm+gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUO3Gmd1A0kC+Kr43VX6k9kAmO
+# 8eigggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -428,9 +392,9 @@ function rccmstor {Reconnect-CCMS -cred $credO365TORSID}
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBTVN+Ti
-# 3jmkHFDm0h+6PDfAdCAsLDANBgkqhkiG9w0BAQEFAASBgI2D0G3U2S5dgvg7wNWu
-# 6OevjT8xInMGIYAA1IaII4X+1ahem4XWOTvcvOCr3jnvTbcWOc1ra6gVbHzu9cMa
-# ti0GkKbO2iQkGDNSwvOiMD3vtbb7iZ8ay1Xk9t+t4CgMzby0Cg5U206iBmTwSA8x
-# 0hvhnWNSRqBfRZKW1wnMjdzL
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSROG78
+# 6tulZXEaE1zA2mcrAMePWDANBgkqhkiG9w0BAQEFAASBgHrfE955DIHHrOyaFh8G
+# Q947YMhkVUdxpBzzwmJot6QTNsmKNy0XAFUlRh5G0NVQWF67MipWGLVVdgJNwg2x
+# 2Ycrhigkkb7A47irLgYxuJYvdsHGAVIyJMXRjRhVjT74vW9vUfDPwBfpXiR8nd/z
+# To6eGA3l4o9qHEfQqx7n1gS/
 # SIG # End signature block
