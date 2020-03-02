@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.3.0
+Version     : 1.0.2.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -38,7 +38,9 @@ https://github.com/tostka/verb-CCMS
 $script:ModuleRoot = $PSScriptRoot ;
 $script:ModuleVersion = (Import-PowerShellDataFile -Path (get-childitem $script:moduleroot\*.psd1).fullname).moduleversion ;
 
-#*======v FUNCTIONS v======
+
+# Auto-export all Aliases
+Export-ModuleMember -Alias * ;
 
 
 
@@ -407,16 +409,11 @@ function rccmstor {Reconnect-CCMS -cred $credO365TORSID}
 
 #*------^ Reconnect-CCMS.ps1 ^------
 
-#*======^ END FUNCTIONS ^======
-
-Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,cccmscmw,cccmstor,Disconnect-CCMS,Disconnect-PssBroken,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS,rccmstol,rccmscmw,rccmstor -Alias *
-
-
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU1V1FOZRbVXXj9U1LYpRd7Wk7
-# E0KgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUMQeYuX72FVhC7SRR83b8h/gc
+# dm+gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -431,9 +428,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,c
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQsfvz7
-# xdJejLgWU8RzutDHLmh3lzANBgkqhkiG9w0BAQEFAASBgCSluG7s8gf6eJAeGxbV
-# 24QXfgcoqSjfyhwYi8kt73X4cvBWt+C4TvvTCWNUayid2B+0MtBtKXzuHjtxsbcC
-# jSyM012TM1wEa0JOPBWSYFH3xh9aFAFhcp/2m3oOFda76sIXj9JSdlBPAsiLWZED
-# 3Ek3Dw0oxxhax7U+Z8+zlNMS
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBTVN+Ti
+# 3jmkHFDm0h+6PDfAdCAsLDANBgkqhkiG9w0BAQEFAASBgI2D0G3U2S5dgvg7wNWu
+# 6OevjT8xInMGIYAA1IaII4X+1ahem4XWOTvcvOCr3jnvTbcWOc1ra6gVbHzu9cMa
+# ti0GkKbO2iQkGDNSwvOiMD3vtbb7iZ8ay1Xk9t+t4CgMzby0Cg5U206iBmTwSA8x
+# 0hvhnWNSRqBfRZKW1wnMjdzL
 # SIG # End signature block
