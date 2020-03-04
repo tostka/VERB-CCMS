@@ -27,21 +27,43 @@ https://github.com/tostka
 PARAM() ;
 $Verbose = ($VerbosePreference -eq 'Continue') ;
 
-# patch in ISE support
-if ($psISE){
-    $ScriptDir = Split-Path -Path $psISE.CurrentFile.FullPath ;
-    $ScriptBaseName = split-path -leaf $psise.currentfile.fullpath ;
-    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($psise.currentfile.fullpath) ;
-    $PSScriptRoot = $ScriptDir ;
-    if($PSScriptRoot -ne $ScriptDir){ write-warning "UNABLE TO UPDATE BLANK `$PSScriptRoot TO CURRENT `$ScriptDir!"} ;
-    $PSCommandPath = $psise.currentfile.fullpath ;
-    if($PSCommandPath -ne $psise.currentfile.fullpath){ write-warning "UNABLE TO UPDATE BLANK `$PSCommandPath TO CURRENT `$psise.currentfile.fullpath!"} ;
-}
+# patch in ISE/VSC etc auto-vari support
+if ($PSScriptRoot -eq "") {
+    if ($psISE){
+        $ScriptName = $psISE.CurrentFile.FullPath ; 
+    } elseif ($context = $psEditor.GetEditorContext()) {
+        $ScriptName = $context.CurrentFile.Path ;  
+    } elseif($host.version.major -lt 3){
+        $ScriptName = $MyInvocation.MyCommand.Path ; 
+        $PSScriptRoot = Split-Path $ScriptName -Parent ;
+        $PSCommandPath = $ScriptName ;
+    } else {
+        if($MyInvocation.MyCommand.Path) {
+            $ScriptName = $MyInvocation.MyCommand.Path ; 
+            $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent ;
+        } else {
+            throw "UNABLE TO POPULATE SCRIPT PATH, EVEN `$MyInvocation IS BLANK!" ;
+        } ;
+    }; 
+    $ScriptDir = Split-Path -Parent $ScriptName ; 
+    $ScriptBaseName = split-path -leaf $ScriptName ;
+    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($ScriptName) ;
+} else {
+    $ScriptDir = $PSScriptRoot ;
+    if($PSCommandPath){
+        $ScriptName = $PSCommandPath ; 
+    } else {
+        $ScriptName = $myInvocation.ScriptName
+        $PSCommandPath = $ScriptName ;
+    } ;
+    $ScriptBaseName = (Split-Path -Leaf ((&{$myInvocation}).ScriptName))  ;
+    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($MyInvocation.InvocationName) ;
+} ; 
 
 
-$ModuleName = Split-Path (Resolve-Path "$PSScriptRoot\..\" ) -Leaf
-$ModuleManifest = Resolve-Path "$PSScriptRoot\..\$ModuleName\$ModuleName.psd1"
-$ProjectRoot  = (Split-Path -Parent $MyInvocation.MyCommand.Path).Replace('tests', '')
+$ModuleName = Split-Path (Resolve-Path "$ScriptDir\..\" ) -Leaf ; 
+$ModuleManifest = (Resolve-Path "$ScriptDir\..\$ModuleName\$ModuleName.psd1").path ; 
+$ProjectRoot = (Resolve-path "$ScriptDir\..\").path ; 
 if(!(test-path $ProjectRoot\README.md)){
     throw "Unable to resolve ProjectRoot!" ;
 }
@@ -142,31 +164,10 @@ Describe 'General - Testing all scripts and modules against the Script Analyzer 
 } 
 
 #region PSSA Testing
+
 <# Calling PS Script analyzer with Pester : PowerShell - https://www.reddit.com/r/PowerShell/comments/6tmprp/calling_ps_script_analyzer_with_pester/
 Shepherd_Ra, 2018
-#>
-<#
-Describe -Tags 'PSSA' -Name 'Testing against PSScriptAnalyzer rules' {
-    Context 'PSSA Standard Rules' {
-        $ScriptAnalyzerSettings = Get-Content -Path $scriptStylePath | Out-String | Invoke-Expression
-        #$AnalyzerIssues = Invoke-ScriptAnalyzer -Path "$PSScriptRoot\..\MyScript.ps1" -Settings "$PSScriptRoot\..\ScriptAnalyzerSettings.psd1"
-        $AnalyzerIssues = Invoke-ScriptAnalyzer -Path $ProjectRoot -Recurse -Settings $scriptStylePath
-        $ScriptAnalyzerRuleNames = Get-ScriptAnalyzerRule | Select-Object -ExpandProperty RuleName
-        forEach ($Rule in $ScriptAnalyzerRuleNames) {
-            $Skip = @{Skip=$False}
-            if ($ScriptAnalyzerSettings.ExcludeRules -notcontains $Rule) {
-                # We still want it in the tests, but since it doesn't actually get tested we will skip
-                $Skip = @{Skip = $True}
-            }
-            It "Should pass $Rule" @Skip {
-                $Failures = $AnalyzerIssues | Where-Object -Property RuleName -EQ -Value $rule
-                ($Failures | Measure-Object).Count | Should Be 0
-            }
-        }
-    }
-}
-#>
-<# above extended with updated rule skip logic - shows *all* rules, marks skips
+above extended with updated rule skip logic - shows *all* rules, marks skips
 #>
 Describe -Tags 'PSSA' -Name 'Testing against PSScriptAnalyzer rules' {
     Context 'PSSA Standard Rules' {
@@ -193,76 +194,30 @@ Describe -Tags 'PSSA' -Name 'Testing against PSScriptAnalyzer rules' {
     }
 }
 
-<#
-Describe 'Testing against ScriptAnalyzer rules' {
-    Context "Rules:$scriptStylePath" {
-        $report = Invoke-ScriptAnalyzer -Path $ProjectRoot -Recurse -Settings $scriptStylePath
-        #$scriptAnalyzerRules = Get-ScriptAnalyzerRule
-        $rulesHash = Import-PowerShellDataFile -path $scriptStylePath ;
-        #forEach ($rule in $scriptAnalyzerRules) {
-        forEach ($rule in $ruleshash.IncludeRules) {        
-            It "Should pass $rule" {
-                If ($report.RuleName -contains $rule) {
-                    $report |
-                    Where RuleName -EQ $rule -outvariable failures |
-                    Out-Default
-                    $failures.Count | Should Be 0
-                }
-            }
-        }
-    }
-}
+
+<# report profiling
+$report = import-clixml -path $path ; 
+write-verbose -verbose:$verbose "`n`$Report | group severity" 
+"$(($report | group severity | sort count | ft -auto count,name|out-string).trim())`n" ;
+
+write-verbose -verbose:$verbose "`n`$Report | group rulename"
+"$(($report | group rulename | sort count | ft -auto count,name|out-string).trim())`n" ;
+
+write-verbose -verbose:$verbose "`n`$Report | group scriptname"
+"$(($report | group scriptpath | sort -desc count | ft -auto count,name|out-string).trim())`n" ;
+
+write-verbose -verbose:$verbose "`n Detailed per script report:" ;
+foreach ($scriptrpt in $scriptreported ) {
+    $sBnrS = "`n#*------v $($scriptrpt): v------" ;
+    "$($sBnrS)" ;
+    "$(($report |?{$_.scriptname -eq $scriptrpt} | sort rulename,message | ft -auto Severity,Line,RuleName,Message|out-string).trim())`n" ;
+    "$($sBnrS.replace('-v','-^').replace('v-','^-'))" ;
+} ;
 #>
 
-<#
-Describe 'General - Testing all scripts and modules against the Script Analyzer Rules' {
-    Context "Checking files to test exist and Invoke-ScriptAnalyzer cmdLet is available" {
-        It "Checking files exist to test." {
-            $moduleComponents.count | Should Not Be 0
-        }
-        It "Checking Invoke-ScriptAnalyzer exists." {
-            { Get-Command Invoke-ScriptAnalyzer -ErrorAction Stop } | Should Not Throw
-        }
-    }
-
-    Context "Checking component files against settings:$scriptStylePath" {
-        #write-verbose -verbose:$verbose "Using Settings:$($scriptStylePath)"
-        
-
-        $Report = Invoke-ScriptAnalyzer -Path $ProjectRoot -Recurse -Settings $scriptStylePath ;
-
-        $Report.count | Should Be 0
-
-        if ($verbose) {
-            write-verbose -verbose:$verbose "`n`$Report | group severity" 
-            "$(($report | group severity | sort count | ft -auto count,name|out-string).trim())`n" ;
-
-            write-verbose -verbose:$verbose "`n`$Report | group rulename"
-            "$(($report | group rulename | sort count | ft -auto count,name|out-string).trim())`n" ;
-
-            write-verbose -verbose:$verbose "`n`$Report | group scriptname"
-            "$(($report | group scriptpath | sort -desc count | ft -auto count,name|out-string).trim())`n" ;
-
-            write-verbose -verbose:$verbose "`n Detailed per script report:" ;
-            foreach ($scriptrpt in $scriptreported ) {
-                $sBnrS = "`n#*------v $($scriptrpt): v------" ;
-                "$($sBnrS)" ;
-                "$(($report |?{$_.scriptname -eq $scriptrpt} | sort rulename,message | ft -auto Severity,Line,RuleName,Message|out-string).trim())`n" ;
-                "$($sBnrS.replace('-v','-^').replace('v-','^-'))" ;
-            } ;
-        };
-    }
-
-    #>
-
-
-
 $ofile = join-path -path (split-path $scriptStylePath) -child "ScriptAnalyzer-Results-$(get-date -format 'yyyyMMdd-HHmmtt').xml" ;
-
-Describe 'ScriptAnalyzer Report written to:$ofile' {    
-    $Report | export-clixml -path $ofile
-    #write-verbose -verbose:$verbose  "ScriptAnalyzer Report written to:`n$($ofile)" ;
-} 
+$Report | export-clixml -path $ofile
+write-verbose -verbose:$verbose  "ScriptAnalyzer Report written to:`n$($ofile)" ;
 
 #endregion
      
