@@ -1,4 +1,4 @@
-# VERB-CCMS.psm1
+﻿# VERB-CCMS.psm1
 
 
 <#
@@ -308,6 +308,33 @@ if(!(get-alias | Where-Object{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value
 
 #*------^ Disconnect-CCMS.ps1 ^------
 
+#*------v Disconnect-PssBroken.ps1 v------
+Function Disconnect-PssBroken {
+    <#
+    .SYNOPSIS
+    Disconnect-PssBroken - Remove all local broken PSSessions
+    .NOTES
+    Author: Todd Kadrie
+    Website:	http://tinstoys.blogspot.com
+    Twitter:	http://twitter.com/tostka
+    REVISIONS   :
+    * 12:56 PM 11/7/2f018 fix typo $s.state.value, switched tests to the strings, over values (not sure worked at all)
+    * 1:50 PM 12/8/2016 initial version
+    .DESCRIPTION
+    Disconnect-PssBroken - Remove all local broken PSSessions
+    .INPUTS
+    None. Does not accepted piped input.
+    .OUTPUTS
+    None. Returns no objects or output.
+    .EXAMPLE
+    Disconnect-PssBroken ;
+    .LINK
+    #>
+    Get-PsSession |Where-Object{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
+}
+
+#*------^ Disconnect-PssBroken.ps1 ^------
+
 #*------v rccmsCMW.ps1 v------
 function rccmsCMW {Reconnect-CCMS -cred $credO365CMWCSID}
 
@@ -382,5 +409,31 @@ function rccmstor {Reconnect-CCMS -cred $credO365TORSID}
 
 #*======^ END FUNCTIONS ^======
 
-Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,cccmscmw,cccmstor,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS,rccmstol,rccmscmw,rccmstor -Alias *
+Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,cccmscmw,cccmstor,Disconnect-CCMS,Disconnect-PssBroken,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS,rccmstol,rccmscmw,rccmstor -Alias *
 
+
+# SIG # Begin signature block
+# MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUCQ6jKK6pS/Z2X6l+wAP4AZ6C
+# wU2gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
+# Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
+# ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
+# a+NnFYNRPPa8Bnm071ohGe27jNWKPVUbDfd0OY2sqCBQCEFVb5pqcIECRRnlhN5H
+# +EEJmm2x9AU0uS7IHxHeUo8fkW4vm49adkat5gAoOZOwbuNntBOAJy9LCyNs4F1I
+# KKphP3TyDwe8XqsEVwB2m9FPAgMBAAGjdjB0MBMGA1UdJQQMMAoGCCsGAQUFBwMD
+# MF0GA1UdAQRWMFSAEL95r+Rh65kgqZl+tgchMuKhLjAsMSowKAYDVQQDEyFQb3dl
+# clNoZWxsIExvY2FsIENlcnRpZmljYXRlIFJvb3SCEGwiXbeZNci7Rxiz/r43gVsw
+# CQYFKw4DAh0FAAOBgQB6ECSnXHUs7/bCr6Z556K6IDJNWsccjcV89fHA/zKMX0w0
+# 6NefCtxas/QHUA9mS87HRHLzKjFqweA3BnQ5lr5mPDlho8U90Nvtpj58G9I5SPUg
+# CspNr5jEHOL5EdJFBIv3zI2jQ8TPbFGC0Cz72+4oYzSxWpftNX41MmEsZkMaADGC
+# AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
+# Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
+# AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQwPn01
+# SOwoTud58+dCldHWf5XXJjANBgkqhkiG9w0BAQEFAASBgBYXvs/jdy4JFOdEWe0C
+# tS+lcSF01ZNwPaZGhQhgM/fetiDx2LgjVDA8nMnSWrq8ZuQXjKNbL/QZ0rOrstU1
+# 3uTOmQsNHIzcIhyZqGG80m3YqfySaEHT+OyAGMX9G0EaeUgzWlb8xgvvA94SZhVw
+# ICdE/U2fQLLUfgnno/R0mfSi
+# SIG # End signature block

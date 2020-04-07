@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.4.0
+Version     : 1.0.5.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -308,33 +308,6 @@ if(!(get-alias | Where-Object{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value
 
 #*------^ Disconnect-CCMS.ps1 ^------
 
-#*------v Disconnect-PssBroken.ps1 v------
-Function Disconnect-PssBroken {
-    <#
-    .SYNOPSIS
-    Disconnect-PssBroken - Remove all local broken PSSessions
-    .NOTES
-    Author: Todd Kadrie
-    Website:	http://tinstoys.blogspot.com
-    Twitter:	http://twitter.com/tostka
-    REVISIONS   :
-    * 12:56 PM 11/7/2f018 fix typo $s.state.value, switched tests to the strings, over values (not sure worked at all)
-    * 1:50 PM 12/8/2016 initial version
-    .DESCRIPTION
-    Disconnect-PssBroken - Remove all local broken PSSessions
-    .INPUTS
-    None. Does not accepted piped input.
-    .OUTPUTS
-    None. Returns no objects or output.
-    .EXAMPLE
-    Disconnect-PssBroken ;
-    .LINK
-    #>
-    Get-PsSession |Where-Object{$_.State -ne 'Opened' -or $_.Availability -ne 'Available'} | Remove-PSSession -Verbose ;
-}
-
-#*------^ Disconnect-PssBroken.ps1 ^------
-
 #*------v rccmsCMW.ps1 v------
 function rccmsCMW {Reconnect-CCMS -cred $credO365CMWCSID}
 
@@ -409,14 +382,14 @@ function rccmstor {Reconnect-CCMS -cred $credO365TORSID}
 
 #*======^ END FUNCTIONS ^======
 
-Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,cccmscmw,cccmstor,Disconnect-CCMS,Disconnect-PssBroken,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS,rccmstol,rccmscmw,rccmstor -Alias *
+Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,cccmscmw,cccmstor,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS,rccmstol,rccmscmw,rccmstor -Alias *
 
 
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUCQ6jKK6pS/Z2X6l+wAP4AZ6C
-# wU2gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQURwAMNuXiBtITPCV3MGzBDa5s
+# Yu+gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -431,9 +404,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,cccmstol,c
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQwPn01
-# SOwoTud58+dCldHWf5XXJjANBgkqhkiG9w0BAQEFAASBgBYXvs/jdy4JFOdEWe0C
-# tS+lcSF01ZNwPaZGhQhgM/fetiDx2LgjVDA8nMnSWrq8ZuQXjKNbL/QZ0rOrstU1
-# 3uTOmQsNHIzcIhyZqGG80m3YqfySaEHT+OyAGMX9G0EaeUgzWlb8xgvvA94SZhVw
-# ICdE/U2fQLLUfgnno/R0mfSi
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQ5EN/V
+# XVSBPvuWxovix0kCdJVn6zANBgkqhkiG9w0BAQEFAASBgEBGEXQMGFEvTYyRG+BL
+# Pexqj95OWB10NgebyYqseYKGx9mLIuE2OA4DXxdSWFgapVR11SUEhLJrmPFSYrtQ
+# SRtgVjcWNaGen4ExmkjnMghy36Hbs1I61Z/RDwncBbxiOEQMEg/CW8MSFFg8EUrD
+# eJxx9WrYrdDj/XJPihs3vEef
 # SIG # End signature block

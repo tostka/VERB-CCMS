@@ -12,7 +12,7 @@
 RootModule = 'VERB-CCMS.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.4'
+ModuleVersion = '1.0.5'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -69,7 +69,7 @@ Description = 'o365 Security & Compliance PS Module-related generic functions'
 # NestedModules = @()
 
 # Functions to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no functions to export.
-FunctionsToExport = @('cccmsCMW','cccmsTOL','cccmsTOR','Connect-CCMS','cccmstol','cccmscmw','cccmstor','Disconnect-CCMS','Disconnect-PssBroken','rccmsCMW','rccmsTOL','rccmsTOL','Reconnect-CCMS','rccmstol','rccmscmw','rccmstor')
+FunctionsToExport = @('cccmsCMW','cccmsTOL','cccmsTOR','Connect-CCMS','cccmstol','cccmscmw','cccmstor','Disconnect-CCMS','rccmsCMW','rccmsTOL','rccmsTOL','Reconnect-CCMS','rccmstol','rccmscmw','rccmstor')
 
 # Cmdlets to export from this module, for best performance, do not use wildcards and do not delete the entry, use an empty array if there are no cmdlets to export.
 CmdletsToExport = '*'
@@ -126,8 +126,8 @@ PrivateData = @{
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU2UouayccFdGFBAs0B1iBZAjW
-# Zd+gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUWA+eklPboAwajFMoWE74MMi1
+# MG6gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -142,9 +142,9 @@ PrivateData = @{
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSS7yhK
-# rR9axmqEH7UZpsTcG2wrlDANBgkqhkiG9w0BAQEFAASBgHJH8fDPR1UyKP9XYrgE
-# r9kpExuhzH5mTLQoHuhIhcd02gUjWc9xdwAOTYGSC5dp4msSbzPFXH1MsbiqrFxt
-# YyAERdIQA7FIWVM1uaZGmRu0P1s0jwY6OQmTzmReRA7QUUcpHvGRRFw42lpa2a7t
-# DnbQtt/P/2XbiIQve8TjAssc
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSouDwz
+# p1JJvCqsnNjQKVz260LUGjANBgkqhkiG9w0BAQEFAASBgG3q+9Qk9IRWQbFpbee8
+# uL8IvLBTzU+cyi2ACR1ILzqGuJ2eV+C0gTjQgCnm4b4AjJsBPFDBGB8ooqYpQhpn
+# AS8n1vuw265t9FX7hZsoQ9jzFkAIb8DXuSCTMNuHf47EBbSoeXzxqO3qpsMwpgjG
+# llOb0CRpg7YTWl+e990kBzAH
 # SIG # End signature block
