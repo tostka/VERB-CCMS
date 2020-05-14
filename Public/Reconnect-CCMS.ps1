@@ -9,6 +9,8 @@ Function Reconnect-CCMS {
     Twitter:	https://twitter.com/tostka
     Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
     REVISIONS   :
+    * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom
+    * 2:53 PM 5/14/2020 added test & local spec for $rgxCCMSPsHostName, wo it, it can't detect disconnects
     * 1:07 PM 11/25/2019 added *tol/*tor/*cmw alias variants for connect & reconnect
     # 2:42 PM 11/19/2019 started roughing in mfa support
     # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
@@ -34,9 +36,7 @@ Function Reconnect-CCMS {
     ) ; 
     
     # appears MFA may not properly support passing back a session vari, so go right to strict hostname matches
-    #if ($CCMSSession.state -eq 'Broken' -or !$CCMSSession) {Disconnect-CCMS; Start-Sleep -Seconds 3; Connect-CCMS} ;     
-    # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
-    #if (($CCMSSession.state -ne 'Opened' -AND $CCMSSession.Availability -ne 'Available') -or !$CCMSSession) {
+    if(!$rgxCCMSPsHostName){$rgxCCMSPsHostName="ps\.compliance\.protection\.outlook\.com" } ; # comes from infr file
     if( !(Get-PSSession|Where-Object{($_.ComputerName -match $rgxCCMSPsHostName) -AND ($_.State -eq 'Opened') -AND ($_.Availability -eq 'Available')}) ){
       if($showdebug){ write-host -foregroundcolor yellow "$((get-date).ToString('HH:mm:ss')):Reconnecting:No existing PSSESSION matching $($rgxCCMSPsHostName) with valid Open/Availability:$((Get-PSSession|?{$_.ComputerName -match $rgxCCMSPsHostName}| ft -a State,Availability |out-string).trim())" } ; 
       Disconnect-CCMS; Disconnect-PssBroken ;Start-Sleep -Seconds 3; 
@@ -49,6 +49,3 @@ Function Reconnect-CCMS {
   } ;     
 }#*------^ END Function Reconnect-CCMS ^------
 if(!(get-alias | Where-Object{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;
-function rccmstol {Reconnect-CCMS -cred $credO365TOLSID};
-function rccmscmw {Reconnect-CCMS -cred $credO365CMWCSID};
-function rccmstor {Reconnect-CCMS -cred $credO365TORSID};

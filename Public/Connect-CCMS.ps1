@@ -1,4 +1,4 @@
-#*------v Function Connect-CCMS v------
+#*------v Connect-CCMS.ps1 v------
 Function Connect-CCMS {
     <#
     .SYNOPSIS
@@ -8,6 +8,7 @@ Function Connect-CCMS {
     Website:	https://www.toddomation.com
     Twitter:	https://twitter.com/tostka
     REVISIONS   :
+    * 4:17 PM 5/14/2020 fixed fundemental typos, in port over from verb-exo, mfa is just sketched in... we don't have it enabled, so it needs live debugging to update
     * 10:55 AM 12/6/2019 Connect-CCMS: added suffix to TitleBar tag for non-TOR tenants, also config'd a central tab vari
     * 5:14 PM 11/27/2019 repl $MFA code with get-TenantMFARequirement
     * 1:07 PM 11/25/2019 added *tol/*tor/*cmw alias variants for connect & reconnect
@@ -28,15 +29,15 @@ Function Connect-CCMS {
     Connect-CCMS
     Connect using defaults, and leverage any pre-set $global:o365cred variable
     .EXAMPLE
-    Connect-CCMS -CommandPrefix exo -credential (Get-Credential -credential logon@DOMAIN.com)  ;
-    Connect an explicit credential, and use 'exolab' as the cmdlet prefix
+    Connect-CCMS -CommandPrefix cc -credential (Get-Credential -credential logon@DOMAIN.com)  ;
+    Connect an explicit credential, and use 'cc' as the cmdlet prefix
     .LINK
     https://docs.microsoft.com/en-us/powershell/exchange/office-365-scc/connect-to-scc-powershell/connect-to-scc-powershell?view=exchange-ps
 #>
 
    Param(
         [Parameter(HelpMessage="Use Proxy-Aware SessionOption settings [-ProxyEnabled]")][boolean]$ProxyEnabled = $False,
-        [Parameter(HelpMessage="[noun]-PREFIX[command] PREFIX string for clearly marking cmdlets sourced in this connection [-CommandPrefix exolab]")][string]$CommandPrefix = 'exo',
+        [Parameter(HelpMessage="[noun]-PREFIX[command] PREFIX string for clearly marking cmdlets sourced in this connection [-CommandPrefix exolab]")][string]$CommandPrefix = 'cc',
         [Parameter(HelpMessage="Credential to use for this connection [-credential [credential obj variable]")][System.Management.Automation.PSCredential]$Credential = $global:credo365TORSID,
         [Parameter(HelpMessage="Debugging Flag [-showDebug]")]
         [switch] $showDebug
@@ -51,7 +52,7 @@ Function Connect-CCMS {
       write-verbose -verbose:$true  "(asserting Prefix:$($CommandPrefix)" ;
     } ;
 
-    $sTitleBarTag="SOL" ;
+    $sTitleBarTag="CCMS" ;
     if($Credential){
         switch -regex ($Credential.username.split('@')[1]){
             "toro\.com" {
@@ -74,51 +75,72 @@ Function Connect-CCMS {
     } ;
 
     if($MFA){
-        #$CreateEXOPSSession = (Get-ChildItem -Path $Env:LOCALAPPDATA\Apps\2.0* -Filter CreateExoPSSession.ps1 -Recurse -ErrorAction SilentlyContinue -Force | Select -Last 1).DirectoryName ;
-        <# 2:37 PM 11/12/2019 LYN-8DCZ1G2 $CreateEXOPSSession returns:
-        C:\Users\kadritss\AppData\Local\Apps\2.0\D8EN8V94.BC1\KNNJHR2J.BBV\micr..tion_5329ec537c0b4b5c_0010.0000_9fc624cd0073956e
-        #>
-
         try {
             $ExoPSModuleSearchProperties = @{
                 Path        = "$($env:LOCALAPPDATA)\Apps\2.0\" ;
-                Filter     = 'Microsoft.Exchange.Management.ExoPowerShellModule.dll' ;
+                Filter      = 'Microsoft.Exchange.Management.ExoPowerShellModule.dll' ;
                 Recurse     = $true ;
                 ErrorAction = 'Stop' ;
             } ;
 
-            if($showDebug){write-host -foregroundcolor green "Get-ChildItem w`n$(($ExoPSModuleSearchProperties|out-string).trim())" } ;
-            $ExoPSModule =  Get-ChildItem @ExoPSModuleSearchProperties |
-                            Where-Object {$_.FullName -notmatch '_none_'} |
-                            Sort-Object LastWriteTime |
-                            Select-Object -Last 1 ;
+            if ($showDebug) { write-host -foregroundcolor green "Get-ChildItem w`n$(($ExoPSModuleSearchProperties|out-string).trim())" } ;
+            $ExoPSModule = Get-ChildItem @ExoPSModuleSearchProperties |
+            Where-Object { $_.FullName -notmatch '_none_' } |
+            Sort-Object LastWriteTime |
+            Select-Object -Last 1 ;
             Import-Module $ExoPSModule.FullName -ErrorAction:Stop ;
-            $ExoPSModuleManifest = $ExoPSModule.FullName -replace '\.dll','.psd1' ;
-            $NewExoPSModuleManifestProps = @{
-                    Path            = $ExoPSModuleManifest ;
-                    RootModule      = $ExoPSModule.Name
-                    ModuleVersion   = "$((Get-Module $ExoPSModule.FullName -ListAvailable).Version.ToString())" ;
-                    Author          = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
-                    CompanyName     = 'jb365' ;
+            $ExoPSModuleManifest = $ExoPSModule.FullName -replace '\.dll', '.psd1' ;
+            if (!(Get-Module $ExoPSModule.FullName -ListAvailable -ErrorAction 0 )) {
+                write-verbose -verbose:$true  "Unable to`nGet-Module $($ExoPSModule.FullName) -ListAvailable`ndiverting to hardcoded exoMFAModule`nRequires that it be locally copied below`n$env:userprofile\documents\WindowsPowerShell\Modules\exoMFAModule\`n " ;
+                # go to a hard load path $env:userprofile\documents\WindowsPowerShell\Modules\exoMFAModule\
+                $ExoPSModuleSearchProperties = @{
+                    Path        = "$($env:userprofile)\documents\WindowsPowerShell\Modules\exoMFAModule\" ;
+                    Filter      = 'Microsoft.Exchange.Management.ExoPowerShellModule.dll' ;
+                    Recurse     = $true ;
+                    ErrorAction = 'Stop' ;
+                } ;
+                $ExoPSModule = Get-ChildItem @ExoPSModuleSearchProperties |
+                Where-Object { $_.FullName -notmatch '_none_' } |
+                Sort-Object LastWriteTime |
+                Select-Object -Last 1 ;
+                # roll an otf psd1+psm1 module
+                # pull the broken ModuleVersion   = "$((Get-Module $ExoPSModule.FullName -ListAvailable).Version.ToString())" ;
+                $NewExoPSModuleManifestProps = @{
+                    Path        = $ExoPSModuleManifest ;
+                    RootModule  = $ExoPSModule.Name
+                    Author      = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
+                    CompanyName = 'jb365' ;
+                } ;
+                if (Get-Content "$($env:userprofile)\Documents\WindowsPowerShell\Modules\exoMFAModule\Microsoft.Exchange.Management.ExoPowershellModule.manifest" | Select-String '<assemblyIdentity\sname="mscorlib"\spublicKeyToken="b77a5c561934e089"\sversion="(\d\.\d\.\d\.\d)"\s/>' | Where-Object { $_ -match '(\d\.\d\.\d\.\d)' }) {
+                    $NewExoPSModuleManifestProps.add('ModuleVersion', $matches[0]) ;
+                } ;
+            } else {
+                # roll an otf psd1+psm1 module
+                $NewExoPSModuleManifestProps = @{
+                    Path          = $ExoPSModuleManifest ;
+                    RootModule    = $ExoPSModule.Name
+                    ModuleVersion = "$((Get-Module $ExoPSModule.FullName -ListAvailable).Version.ToString())" ;
+                    Author        = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
+                    CompanyName   = 'jb365' ;
+                } ;
             } ;
-            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewExoPSModuleManifestProps|out-string).trim())" } ;
+            if ($showDebug) { write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewExoPSModuleManifestProps|out-string).trim())" } ;
             New-ModuleManifest @NewExoPSModuleManifestProps ;
             Import-Module $ExoPSModule.FullName -Global -ErrorAction:Stop ;
             $CreateExoPSSessionPs1 = Get-ChildItem -Path $ExoPSModule.PSParentPath -Filter 'CreateExoPSSession.ps1' ;
-            $CreateExoPSSessionManifest = $CreateExoPSSessionPs1.FullName -replace '\.ps1','.psd1' ;
-            $CreateExoPSSessionPs1 =    $CreateExoPSSessionPs1 |
-                                        Get-Content |
-                                        Where-Object {-not ($_ -like 'Write-Host*')} ;
+            $CreateExoPSSessionManifest = $CreateExoPSSessionPs1.FullName -replace '\.ps1', '.psd1' ;
+            $CreateExoPSSessionPs1 = $CreateExoPSSessionPs1 |
+            Get-Content | Where-Object { -not ($_ -like 'Write-Host*') } ;
             $CreateExoPSSessionPs1 -join "`n" |
             Set-Content -Path "$($CreateExoPSSessionManifest -replace '\.psd1','.psm1')" ;
             $NewCreateExoPSSessionManifest = @{
-                    Path            = $CreateExoPSSessionManifest ;
-                    RootModule      = Split-Path -Path ($CreateExoPSSessionManifest -replace '\.psd1','.psm1') -Leaf ;
-                    ModuleVersion   = '1.0' ;
-                    Author          = 'Jeremy Bradshaw (https://github.com/JeremyTBradshaw)' ;
-                    CompanyName     = 'jb365' ;
+                Path          = $CreateExoPSSessionManifest ;
+                RootModule    = Split-Path -Path ($CreateExoPSSessionManifest -replace '\.psd1', '.psm1') -Leaf ;
+                ModuleVersion = '1.0' ;
+                Author        = 'Todd Kadrie (https://github.com/tostka)' ;
+                CompanyName   = 'toddomation.com' ;
             } ;
-            if($showDebug){write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewCreateExoPSSessionManifest|out-string).trim())" } ;
+            if ($showDebug) { write-host -foregroundcolor green "New-ModuleManifest w`n$(($NewCreateExoPSSessionManifest|out-string).trim())" } ;
             New-ModuleManifest @NewCreateExoPSSessionManifest ;
             Import-Module "$($ExoPSModule.PSParentPath)\CreateExoPSSession.psm1" -Global -ErrorAction:Stop ;
         } catch {
@@ -127,11 +149,13 @@ Function Connect-CCMS {
         } ;
 
         try {
+            # trying to refactor to get MFA coded in (untested, everything seems doc'd to use Connect-IPPSSession -UserPrincipalName)
+            <#
             $global:UserPrincipalName = $Credential.Username ;
-            $global:ConnectionUri = 'https://ps.compliance.protection.outlook.com/PowerShell-LiveId' ;
+            $global:ConnectionUri = 'https://outlook.office365.com/PowerShell-LiveId' ;
             $global:AzureADAuthorizationEndpointUri = 'https://login.windows.net/common' ;
             $global:PSSessionOption = New-PSSessionOption -CancelTimeout 5000 -IdleTimeout 43200000 ;
-            #$global:BypassMailboxAnchoring = $false ;
+            $global:BypassMailboxAnchoring = $false ;
             $ExoPSSession = @{
                 UserPrincipalName               = $global:UserPrincipalName ;
                 ConnectionUri                   = $global:ConnectionUri ;
@@ -139,22 +163,20 @@ Function Connect-CCMS {
                 PSSessionOption                 = $global:PSSessionOption ;
                 BypassMailboxAnchoring          = $global:BypassMailboxAnchoring ;
             } ;
-            #if ($PSBoundParameters.Credential) {$ExoPSSession['Credential'] = $Credential}
-            if($showDebug){write-host -foregroundcolor green "New-ExoPSSession w`n$(($ExoPSSession|out-string).trim())" } ;
+            if ($showDebug) { write-host -foregroundcolor green "New-ExoPSSession w`n$(($ExoPSSession|out-string).trim())" } ;
             $ExoPSSession = New-ExoPSSession @ExoPSSession -ErrorAction:Stop ;
-            if($showDebug){write-host -foregroundcolor green "Import-PSSession w`n$(($ImportPSSessionProps|out-string).trim())" } ;
-            #Import-Module (Import-PSSession $ExoPSSession @ImportPSSessionProps) -Global -DisableNameChecking -ErrorAction:Stop ;
-            # 11:51 AM 11/20/2019 add prefx
+            if ($showDebug) { write-host -foregroundcolor green "Import-PSSession w`n$(($ImportPSSessionProps|out-string).trim())" } ;
             Import-Module (Import-PSSession $ExoPSSession @ImportPSSessionProps) -Prefix $CommandPrefix -Global -DisableNameChecking -ErrorAction:Stop ;
             UpdateImplicitRemotingHandler ;
+            #>
+            Connect-IPPSSession -UserPrincipalName $Credential.UserName ; 
 
-             # I want to see where I connected...
             Add-PSTitleBar $sTitleBarTag ;
-
         } catch {
             Write-Warning -Message "Failed to connect to EXO via the imported EXO PS module.`n`nError message:" ;
             throw $_ ;
         } ;
+
 
     } else {
 
@@ -166,7 +188,7 @@ Function Connect-CCMS {
             AllowRedirection=$true;
         } ;
         # just use the passed $Credential vari
-        $EXOsplat.Add("Credential",$Credential);
+        $CCMSsplat.Add("Credential",$Credential);
 
 
         If ($ProxyEnabled) {
@@ -198,7 +220,7 @@ Function Connect-CCMS {
         Try {
             #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ;
             $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ;
-            Add-PSTitleBar 'EXO' ;
+            Add-PSTitleBar 'cc' ;
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
@@ -208,6 +230,3 @@ Function Connect-CCMS {
 
 } ; #*------^ END Function Connect-CCMS ^------
 if(!(get-alias | Where-Object{$_.name -like "cccms"})) {Set-Alias 'cccms' -Value 'Connect-CCMS' ; } ;
-function cccmstol {Connect-CCMS -cred $credO365TOLSID};
-function cccmscmw {Connect-CCMS -cred $credO365CMWCSID};
-function cccmstor {Connect-CCMS -cred $credO365TORSID};
