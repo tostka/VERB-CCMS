@@ -4,11 +4,21 @@ Function Reconnect-CCMS {
     .SYNOPSIS
     Reconnect-CCMS - Test and reestablish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
     .NOTES
-    Author: Todd Kadrie
-    Website:	https://www.toddomation.com
-    Twitter:	https://twitter.com/tostka
-    Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
+    Version     : 1.0.0
+Author      : Todd Kadrie
+Website     :	http://www.toddomation.com
+Twitter     :	@tostka / http://twitter.com/tostka
+CreatedDate : 2020-
+FileName    : 
+License     : MIT License
+Copyright   : (c) 2020 Todd Kadrie
+Github      : https://github.com/tostka
+Tags        : Powershell
+AddedCredit : REFERENCE
+AddedWebsite:	URL
+AddedTwitter:	URL
     REVISIONS   :
+    * 12:16 PM 5/27/2020 updated cbh, moved alias:rccms win func
     * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom
     * 2:53 PM 5/14/2020 added test & local spec for $rgxCCMSPsHostName, wo it, it can't detect disconnects
     * 1:07 PM 11/25/2019 added *tol/*tor/*cmw alias variants for connect & reconnect
@@ -16,7 +26,7 @@ Function Reconnect-CCMS {
     # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
     # 1:04 PM 6/20/2018 CCMS variant, works
     .DESCRIPTION
-    I use this for routine test/reconnect of CCMS.
+    I use this for routine test/reconnect of CCMS.Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
     .PARAMETER  Credential
     Credential to use for this connection [-credential 's-todd.kadrie@toro.com'] 
     .INPUTS
@@ -28,7 +38,8 @@ Function Reconnect-CCMS {
     .LINK
     https://social.technet.microsoft.com/Forums/msonline/en-US/f3292898-9b8c-482a-86f0-3caccc0bd3e5/exchange-powershell-monitoring-remote-sessions?forum=onlineservicesexchange
     #>
-    
+    [CmdletBinding()]
+    [Alias('rccms')]
     Param(
         [Parameter(HelpMessage="Credential to use for this connection [-credential [credential obj variable]")][System.Management.Automation.PSCredential]$Credential = $global:credo365TORSID,  
         [Parameter(HelpMessage="Debugging Flag [-showDebug]")]
@@ -48,4 +59,3 @@ Function Reconnect-CCMS {
       
   } ;     
 }#*------^ END Function Reconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; } ;

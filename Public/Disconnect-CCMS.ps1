@@ -3,10 +3,21 @@ Function Disconnect-CCMS {
     .SYNOPSIS
     Disconnect-CCMS - Disconnects any PSS to https://ps.outlook.com/powershell/ (cleans up session after a batch or other temp work is done)
     .NOTES
-    Updated By: Todd Kadrie
-    Website:	https://www.toddomation.com
-    Twitter:	https://twitter.com/tostka
+    Version     : 1.0.0
+    Author      : Todd Kadrie
+    Website     :	http://www.toddomation.com
+    Twitter     :	@tostka / http://twitter.com/tostka
+    CreatedDate : 2020-
+    FileName    : 
+    License     : MIT License
+    Copyright   : (c) 2020 Todd Kadrie
+    Github      : https://github.com/tostka
+    Tags        : Powershell
+    AddedCredit : REFERENCE
+    AddedWebsite:	URL
+    AddedTwitter:	URL
     REVISIONS   :
+    # 12:19 PM 5/27/2020 updated cbh, moved alias:dccms win func
     # 1:18 PM 11/7/2018 added Disconnect-PssBroken
     # 12:42 PM 6/20/2018 ported over from disconnect-exo
     .DESCRIPTION
@@ -19,7 +30,7 @@ Function Disconnect-CCMS {
     Disconnect-CCMS;
     .LINK
     https://social.technet.microsoft.com/Forums/msonline/en-US/f3292898-9b8c-482a-86f0-3caccc0bd3e5/exchange-powershell-monitoring-remote-sessions?forum=onlineservicesexchange
-    *---^ END Comment-based Help  ^--- #>
+    #>
     # 9:25 AM 3/21/2017 getting undefined on the below, pretest them
     if($Global:CCMSModule){$Global:CCMSModule | Remove-Module -Force ; } ;
     if($Global:CCMSSession){$Global:CCMSSession | Remove-PSSession ; } ;
@@ -28,4 +39,3 @@ Function Disconnect-CCMS {
     Disconnect-PssBroken ;
     Remove-PSTitlebar 'CCMS' ;
 } ; #*------^ END Function Disconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value 'Disconnect-CCMS' ; } ;

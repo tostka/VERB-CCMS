@@ -1,11 +1,11 @@
-# verb-ccms.psm1
+# VERB-CCMS.psm1
 
 
 <#
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.6.0
+Version     : 1.0.7.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -63,10 +63,20 @@ Function Connect-CCMS {
     .SYNOPSIS
     Connect-CCMS - Establish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
     .NOTES
-    Author: : Todd Kadrie
-    Website:	https://www.toddomation.com
-    Twitter:	https://twitter.com/tostka
-    REVISIONS   :
+    Version     : 1.0.0
+    Author      : Todd Kadrie
+    Website     :	http://www.toddomation.com
+    Twitter     :	@tostka / http://twitter.com/tostka
+    CreatedDate : 2020-05-27
+    FileName    : Connect-CCMS.ps1
+    License     : MIT License
+    Copyright   : (c) 2020 Todd Kadrie
+    Github      : https://github.com/tostka
+    Tags        : Powershell
+    AddedCredit : REFERENCE
+    AddedWebsite:	URL
+    AddedTwitter:	URL    REVISIONS   :
+    * 12:18 PM 5/27/2020 updated cbh, moved alias:cccms win func
     * 4:17 PM 5/14/2020 fixed fundemental typos, in port over from verb-exo, mfa is just sketched in... we don't have it enabled, so it needs live debugging to update
     * 10:55 AM 12/6/2019 Connect-CCMS: added suffix to TitleBar tag for non-TOR tenants, also config'd a central tab vari
     * 5:14 PM 11/27/2019 repl $MFA code with get-TenantMFARequirement
@@ -74,6 +84,7 @@ Function Connect-CCMS {
     # 1:31 PM 7/9/2018 added suffix hint: if($CommandPrefix){ '(Connected to CCMS: Cmds prefixed [verb]-cc[Noun])' ; } ;
     # 12:25 PM 6/20/2018 port from cxo:     Primary diff from EXO connect is the "-ConnectionUri https://ps.compliance.protection.outlook.com/powershell-liveid/" all else is the same, repurpose connect-EXO to this
     .DESCRIPTION
+    Connect-CCMS - Establish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
     .PARAMETER  ProxyEnabled
     Use Proxy-Aware SessionOption settings [-ProxyEnabled]
     .PARAMETER  CommandPrefix
@@ -93,7 +104,8 @@ Function Connect-CCMS {
     .LINK
     https://docs.microsoft.com/en-us/powershell/exchange/office-365-scc/connect-to-scc-powershell/connect-to-scc-powershell?view=exchange-ps
 #>
-
+    [CmdletBinding()]
+    [Alias('cccms')]
    Param(
         [Parameter(HelpMessage="Use Proxy-Aware SessionOption settings [-ProxyEnabled]")][boolean]$ProxyEnabled = $False,
         [Parameter(HelpMessage="[noun]-PREFIX[command] PREFIX string for clearly marking cmdlets sourced in this connection [-CommandPrefix exolab]")][string]$CommandPrefix = 'cc',
@@ -287,8 +299,7 @@ Function Connect-CCMS {
     } ;
     if($CommandPrefix){ "(Connected to CCMS: Cmds prefixed [verb]-$($CommandPrefix)[Noun])" ; } ;
 
-} ; #*------^ END Function Connect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "cccms"})) {Set-Alias 'cccms' -Value 'Connect-CCMS' ; }
+}
 
 #*------^ Connect-CCMS.ps1 ^------
 
@@ -298,10 +309,21 @@ Function Disconnect-CCMS {
     .SYNOPSIS
     Disconnect-CCMS - Disconnects any PSS to https://ps.outlook.com/powershell/ (cleans up session after a batch or other temp work is done)
     .NOTES
-    Updated By: Todd Kadrie
-    Website:	https://www.toddomation.com
-    Twitter:	https://twitter.com/tostka
+    Version     : 1.0.0
+    Author      : Todd Kadrie
+    Website     :	http://www.toddomation.com
+    Twitter     :	@tostka / http://twitter.com/tostka
+    CreatedDate : 2020-
+    FileName    : 
+    License     : MIT License
+    Copyright   : (c) 2020 Todd Kadrie
+    Github      : https://github.com/tostka
+    Tags        : Powershell
+    AddedCredit : REFERENCE
+    AddedWebsite:	URL
+    AddedTwitter:	URL
     REVISIONS   :
+    # 12:19 PM 5/27/2020 updated cbh, moved alias:dccms win func
     # 1:18 PM 11/7/2018 added Disconnect-PssBroken
     # 12:42 PM 6/20/2018 ported over from disconnect-exo
     .DESCRIPTION
@@ -314,7 +336,7 @@ Function Disconnect-CCMS {
     Disconnect-CCMS;
     .LINK
     https://social.technet.microsoft.com/Forums/msonline/en-US/f3292898-9b8c-482a-86f0-3caccc0bd3e5/exchange-powershell-monitoring-remote-sessions?forum=onlineservicesexchange
-    *---^ END Comment-based Help  ^--- #>
+    #>
     # 9:25 AM 3/21/2017 getting undefined on the below, pretest them
     if($Global:CCMSModule){$Global:CCMSModule | Remove-Module -Force ; } ;
     if($Global:CCMSSession){$Global:CCMSSession | Remove-PSSession ; } ;
@@ -322,8 +344,7 @@ Function Disconnect-CCMS {
     Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
     Disconnect-PssBroken ;
     Remove-PSTitlebar 'CCMS' ;
-} ; #*------^ END Function Disconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "dccms"})) {Set-Alias 'dccms' -Value 'Disconnect-CCMS' ; }
+}
 
 #*------^ Disconnect-CCMS.ps1 ^------
 
@@ -348,11 +369,21 @@ Function Reconnect-CCMS {
     .SYNOPSIS
     Reconnect-CCMS - Test and reestablish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
     .NOTES
-    Author: Todd Kadrie
-    Website:	https://www.toddomation.com
-    Twitter:	https://twitter.com/tostka
-    Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
+    Version     : 1.0.0
+Author      : Todd Kadrie
+Website     :	http://www.toddomation.com
+Twitter     :	@tostka / http://twitter.com/tostka
+CreatedDate : 2020-
+FileName    : 
+License     : MIT License
+Copyright   : (c) 2020 Todd Kadrie
+Github      : https://github.com/tostka
+Tags        : Powershell
+AddedCredit : REFERENCE
+AddedWebsite:	URL
+AddedTwitter:	URL
     REVISIONS   :
+    * 12:16 PM 5/27/2020 updated cbh, moved alias:rccms win func
     * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom
     * 2:53 PM 5/14/2020 added test & local spec for $rgxCCMSPsHostName, wo it, it can't detect disconnects
     * 1:07 PM 11/25/2019 added *tol/*tor/*cmw alias variants for connect & reconnect
@@ -360,7 +391,7 @@ Function Reconnect-CCMS {
     # 1:24 PM 11/7/2018 switch the test to $EOLSession.state -ne 'Opened' -AND $EOLSession.Availability -ne 'Available'
     # 1:04 PM 6/20/2018 CCMS variant, works
     .DESCRIPTION
-    I use this for routine test/reconnect of CCMS.
+    I use this for routine test/reconnect of CCMS.Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
     .PARAMETER  Credential
     Credential to use for this connection [-credential 's-todd.kadrie@toro.com'] 
     .INPUTS
@@ -372,7 +403,8 @@ Function Reconnect-CCMS {
     .LINK
     https://social.technet.microsoft.com/Forums/msonline/en-US/f3292898-9b8c-482a-86f0-3caccc0bd3e5/exchange-powershell-monitoring-remote-sessions?forum=onlineservicesexchange
     #>
-    
+    [CmdletBinding()]
+    [Alias('rccms')]
     Param(
         [Parameter(HelpMessage="Credential to use for this connection [-credential [credential obj variable]")][System.Management.Automation.PSCredential]$Credential = $global:credo365TORSID,  
         [Parameter(HelpMessage="Debugging Flag [-showDebug]")]
@@ -391,8 +423,7 @@ Function Reconnect-CCMS {
       } ; 
       
   } ;     
-}#*------^ END Function Reconnect-CCMS ^------
-if(!(get-alias | Where-Object{$_.name -like "rccms"})) {Set-Alias 'rccms' -Value 'Reconnect-CCMS' ; }
+}
 
 #*------^ Reconnect-CCMS.ps1 ^------
 
