@@ -1,11 +1,11 @@
-﻿# VERB-CCMS.psm1
+﻿# verb-ccms.psm1
 
 
 <#
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.8.0
+Version     : 1.0.10.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -56,6 +56,11 @@ function cccmsTOL {Connect-CCMS -cred $credO365TOLSID}
 function cccmsTOR {Connect-CCMS -cred $credO365TORSID}
 
 #*------^ cccmsTOR.ps1 ^------
+
+#*------v cccmsVEN.ps1 v------
+function cccmsVEN {Connect-CCMS -cred $credO365VENCSID}
+
+#*------^ cccmsVEN.ps1 ^------
 
 #*------v Connect-CCMS.ps1 v------
 Function Connect-CCMS {
@@ -124,19 +129,26 @@ Function Connect-CCMS {
     } ;
 
     $sTitleBarTag="CCMS" ;
-    if($Credential){
-        switch -regex ($Credential.username.split('@')[1]){
-            "toro\.com" {
-                # leave untagged
-             }
-             "torolab\.com" {
-                $sTitleBarTag = $sTitleBarTag + "tlab"
-            }
-            "(charlesmachineworks\.onmicrosoft\.com|charlesmachine\.works)" {
-                $sTitleBarTag = $sTitleBarTag + "cmw"
-            }
-        } ;
-    } ;
+    $credDom = ($Credential.username.split("@"))[1] ;
+    if($Credential.username.contains('.onmicrosoft.com')){
+        # cloud-first acct
+        switch ($credDom){
+            "$($TORMeta['o365_TenantDomain'])" { } 
+            "$($TOLMeta['o365_TenantDomain'])" {$sTitleBarTag += $TOLMeta['o365_Prefix']}
+            "$($CMWMeta['o365_TenantDomain'])" {$sTitleBarTag += $CMWMeta['o365_Prefix']}
+            "$($VENMeta['o365_TenantDomain'])" {$sTitleBarTag += $VENMeta['o365_Prefix']}
+            default {throw "Failed to resolve a `$credVariTag` from populated global 'o365_TenantDomain' props, for credential domain:$($CredDom)" } ;
+        } ; 
+    } else { 
+        # OP federated domain
+        switch ($credDom){
+            "$($TORMeta['o365_OPDomain'])" { }
+            "$($TOLMeta['o365_OPDomain'])" {$sTitleBarTag += $TOLMeta['o365_Prefix']}
+            "$($CMWMeta['o365_OPDomain'])" {$sTitleBarTag += $CMWMeta['o365_Prefix']}
+            "$($VENMeta['o365_OPDomain'])" {$sTitleBarTag += $VENMeta['o365_Prefix']}
+            default {throw "Failed to resolve a `$credVariTag` from populated global 'o365_OPDomain' props, for credential domain:$($CredDom)" } ;
+        } ; 
+    } ; 
 
     $ImportPSSessionProps = @{
         AllowClobber        = $true ;
@@ -363,6 +375,11 @@ function rccmsTOL{reconnect-CCMS -cred $credO365TOLSID}
 
 #*------^ rccmsTOR.ps1 ^------
 
+#*------v rccmsVEN.ps1 v------
+function rccmsVEN {Reconnect-CCMS -cred $credO365VENCSID}
+
+#*------^ rccmsVEN.ps1 ^------
+
 #*------v Reconnect-CCMS.ps1 v------
 Function Reconnect-CCMS {
     <# 
@@ -429,14 +446,14 @@ AddedTwitter:	URL
 
 #*======^ END FUNCTIONS ^======
 
-Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,Reconnect-CCMS -Alias *
+Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,rccmsVEN,Reconnect-CCMS -Alias *
 
 
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU/qPsKE2Xq+su6p5tCdYN2glA
-# 9XqgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUxOlqXRVPMIotdvFxgHxkqPCp
+# 8i6gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -451,9 +468,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,Connect-CCMS,Disconnect
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBTZjTCA
-# 5VlrAevwOVT6RoYNqLO1MTANBgkqhkiG9w0BAQEFAASBgGFyvtGhJxcoPUBOe6qu
-# Br5AFKg9iv4G1fY8+SFdV1zqeC4uLYvNgh4K1cQXno+WytoVGmtmAvqZfZ+KEbkI
-# XzGABOUE+8bl+XqobyABaXTEzjbJ4DdvxoxPWledZwpSRtg06Pa9cA3n3AAVzCde
-# qUhTqCO21bqXbPejtENeqDuh
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRo5wFd
+# KHZDcyo3VCCrGPICrVXURTANBgkqhkiG9w0BAQEFAASBgH3QNI/R4QYj/VZhsARA
+# 4VOyl3rQAK7foTHEOisXscd3zoqa81O7x30A1u5BSK1pLzRNHtVaG+Px7P7gBM8b
+# 5QJUK50nYO/ONFbsDuKVXJoQTswp0/F9kKQsJhKGe0v6RNlS4AZy9yhaM6eYwI2E
+# 90XA9YE376ZadoglK3O5Pi0d
 # SIG # End signature block
