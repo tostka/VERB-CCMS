@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.10.0
+Version     : 1.0.11.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -81,6 +81,7 @@ Function Connect-CCMS {
     AddedCredit : REFERENCE
     AddedWebsite:	URL
     AddedTwitter:	URL    REVISIONS   :
+    * 7:13 AM 7/22/2020 replaced codeblock w get-TenantTag()
     * 12:18 PM 5/27/2020 updated cbh, moved alias:cccms win func
     * 4:17 PM 5/14/2020 fixed fundemental typos, in port over from verb-exo, mfa is just sketched in... we don't have it enabled, so it needs live debugging to update
     * 10:55 AM 12/6/2019 Connect-CCMS: added suffix to TitleBar tag for non-TOR tenants, also config'd a central tab vari
@@ -118,7 +119,7 @@ Function Connect-CCMS {
         [Parameter(HelpMessage="Debugging Flag [-showDebug]")]
         [switch] $showDebug
     ) ;
-
+    $verbose = ($VerbosePreference -eq "Continue") ;
     # shift to pulling the $MFA auto by splitting the credential and checking the o365_*_OPDomain & o365_$($credVariTag)_MFA global varis
     $MFA = get-TenantMFARequirement -Credential $Credential ;
 
@@ -129,25 +130,10 @@ Function Connect-CCMS {
     } ;
 
     $sTitleBarTag="CCMS" ;
-    $credDom = ($Credential.username.split("@"))[1] ;
-    if($Credential.username.contains('.onmicrosoft.com')){
-        # cloud-first acct
-        switch ($credDom){
-            "$($TORMeta['o365_TenantDomain'])" { } 
-            "$($TOLMeta['o365_TenantDomain'])" {$sTitleBarTag += $TOLMeta['o365_Prefix']}
-            "$($CMWMeta['o365_TenantDomain'])" {$sTitleBarTag += $CMWMeta['o365_Prefix']}
-            "$($VENMeta['o365_TenantDomain'])" {$sTitleBarTag += $VENMeta['o365_Prefix']}
-            default {throw "Failed to resolve a `$credVariTag` from populated global 'o365_TenantDomain' props, for credential domain:$($CredDom)" } ;
-        } ; 
-    } else { 
-        # OP federated domain
-        switch ($credDom){
-            "$($TORMeta['o365_OPDomain'])" { }
-            "$($TOLMeta['o365_OPDomain'])" {$sTitleBarTag += $TOLMeta['o365_Prefix']}
-            "$($CMWMeta['o365_OPDomain'])" {$sTitleBarTag += $CMWMeta['o365_Prefix']}
-            "$($VENMeta['o365_OPDomain'])" {$sTitleBarTag += $VENMeta['o365_Prefix']}
-            default {throw "Failed to resolve a `$credVariTag` from populated global 'o365_OPDomain' props, for credential domain:$($CredDom)" } ;
-        } ; 
+    $TentantTag=get-TenantTag -Credential $Credential ; 
+    if($TentantTag -ne 'TOR'){
+        # explicitly leave this tenant (default) untagged
+        $sTitleBarTag += $TentantTag ;
     } ; 
 
     $ImportPSSessionProps = @{
@@ -452,8 +438,8 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUxOlqXRVPMIotdvFxgHxkqPCp
-# 8i6gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU52XyJnmbci/Hc1B2dxhwNED6
+# db+gggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -468,9 +454,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRo5wFd
-# KHZDcyo3VCCrGPICrVXURTANBgkqhkiG9w0BAQEFAASBgH3QNI/R4QYj/VZhsARA
-# 4VOyl3rQAK7foTHEOisXscd3zoqa81O7x30A1u5BSK1pLzRNHtVaG+Px7P7gBM8b
-# 5QJUK50nYO/ONFbsDuKVXJoQTswp0/F9kKQsJhKGe0v6RNlS4AZy9yhaM6eYwI2E
-# 90XA9YE376ZadoglK3O5Pi0d
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBScbX06
+# SbbGfKmwbJ4U+Nh2o5vBwDANBgkqhkiG9w0BAQEFAASBgE71IkGdnLjLy7yxV7G0
+# EPE0lF3GPOkgV19zfGvAJhzqRam2g13IxWjxvU/E27+PlIP50GiDD1eJiidwWtjN
+# K84Ny7QXAVZmgoeZBmnOJHYv3koAZxYjfQVeE8yN5kM09MBTcrdeehR5o9wjc2u9
+# UOqFiJbDZRnjnhizHCr9hHff
 # SIG # End signature block
