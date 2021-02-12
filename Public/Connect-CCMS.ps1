@@ -66,11 +66,11 @@ Function Connect-CCMS {
     } ;
 
     $sTitleBarTag="CCMS" ;
-    $TentantTag=get-TenantTag -Credential $Credential ; 
+    $TentantTag=get-TenantTag -Credential $Credential ;
     if($TentantTag -ne 'TOR'){
         # explicitly leave this tenant (default) untagged
         $sTitleBarTag += $TentantTag ;
-    } ; 
+    } ;
 
     $ImportPSSessionProps = @{
         AllowClobber        = $true ;
@@ -174,7 +174,7 @@ Function Connect-CCMS {
             Import-Module (Import-PSSession $ExoPSSession @ImportPSSessionProps) -Prefix $CommandPrefix -Global -DisableNameChecking -ErrorAction:Stop ;
             UpdateImplicitRemotingHandler ;
             #>
-            Connect-IPPSSession -UserPrincipalName $Credential.UserName ; 
+            Connect-IPPSSession -UserPrincipalName $Credential.UserName ;
 
             Add-PSTitleBar $sTitleBarTag ;
         } catch {
