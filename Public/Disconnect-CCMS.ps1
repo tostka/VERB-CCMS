@@ -17,6 +17,7 @@ Function Disconnect-CCMS {
     AddedWebsite:	URL
     AddedTwitter:	URL
     REVISIONS   :
+    * 2:44 PM 3/2/2021 added console TenOrg color support
     # 12:19 PM 5/27/2020 updated cbh, moved alias:dccms win func
     # 1:18 PM 11/7/2018 added Disconnect-PssBroken
     # 12:42 PM 6/20/2018 ported over from disconnect-exo
@@ -38,4 +39,5 @@ Function Disconnect-CCMS {
     Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
     Disconnect-PssBroken ;
     Remove-PSTitlebar 'CCMS' ;
+    [console]::ResetColor()  # reset console colorscheme
 } ; #*------^ END Function Disconnect-CCMS ^------
