@@ -194,8 +194,10 @@ Function Connect-CCMS {
             AllowRedirection=$true;
         } ;
         # just use the passed $Credential vari
-        $CCMSsplat.Add("Credential",$Credential);
-
+        if ($Credential) {
+            $CCMSsplat.Add("Credential",$Credential);
+            write-verbose "(using cred:$($credential.username))" ; 
+        } ;
 
         If ($ProxyEnabled) {
             $CCMSsplat.Add("sessionOption",$(New-PsSessionOption -ProxyAccessType IEConfig -ProxyAuthentication basic));
@@ -226,11 +228,14 @@ Function Connect-CCMS {
         Try {
             #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ;
             $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ;
+            Add-PSTitleBar 'cc' ;
+            <# borked by psreadline v1/v2 breaking changes
             if(($PSFgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSFgColor) -AND ($PSBgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSBgColor)){
+                write-verbose "(setting console colors:$($TenOrg)Meta.PSFgColor:$($PSFgColor),PSBgColor:$($PSBgColor))" ; 
                 $Host.UI.RawUI.BackgroundColor = $PSBgColor
                 $Host.UI.RawUI.ForegroundColor = $PSFgColor ; 
             } ;
-            Add-PSTitleBar 'cc' ;
+            #>
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;

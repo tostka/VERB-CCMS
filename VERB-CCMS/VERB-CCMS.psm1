@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.13.0
+Version     : 1.0.14.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -258,8 +258,10 @@ Function Connect-CCMS {
             AllowRedirection=$true;
         } ;
         # just use the passed $Credential vari
-        $CCMSsplat.Add("Credential",$Credential);
-
+        if ($Credential) {
+            $CCMSsplat.Add("Credential",$Credential);
+            write-verbose "(using cred:$($credential.username))" ; 
+        } ;
 
         If ($ProxyEnabled) {
             $CCMSsplat.Add("sessionOption",$(New-PsSessionOption -ProxyAccessType IEConfig -ProxyAuthentication basic));
@@ -291,6 +293,7 @@ Function Connect-CCMS {
             #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ;
             $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ;
             if(($PSFgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSFgColor) -AND ($PSBgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSBgColor)){
+                write-verbose "(setting console colors:$($TenOrg)Meta.PSFgColor:$($PSFgColor),PSBgColor:$($PSBgColor))" ; 
                 $Host.UI.RawUI.BackgroundColor = $PSBgColor
                 $Host.UI.RawUI.ForegroundColor = $PSFgColor ; 
             } ;
@@ -445,8 +448,8 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUu7qYnqA+Mjw9YGxNa95QhIZY
-# 8gagggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlDBuVaLYWtmR0Wf5ySEOeRVU
+# 4hegggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -461,9 +464,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSSes4Z
-# UmEYI/u2wYyBHN+l+jamUjANBgkqhkiG9w0BAQEFAASBgBS1E0ayjMuQjSdmQoSL
-# TLKhMdvF1aTjJRLDhqegQ04goxy2ZVcR7EkMduRg5B/32H7HxzH0A85lVIAroBWE
-# NdmVBxZowlIiTFE613N3aLwqZciFMrCH/Cw1djz+ZT2i/P2+Ay56PuZ6QDRkQ3z+
-# m6eUtXLqVnk/flQmcDfVm27E
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBT5iCHS
+# D9Ve66Fy5E+Qx1fxRzJyhzANBgkqhkiG9w0BAQEFAASBgFd7ttHmedT7nReyZwlc
+# UdnQKxr/pgTlGhs3Uyoxq+ullxhvbPrpSt0bz24se4f1MbS55IaW78ZQH4u1mfgq
+# KjTTm0sooHLSVrMUmoEzk8ZEdEeCkSyxg3+1sITDuorJA4wOWn6E/+z5orga8JzW
+# gmdF8n02So18P5PQg9OEIIbH
 # SIG # End signature block
