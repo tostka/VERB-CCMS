@@ -1,4 +1,4 @@
-#*------v Function Reconnect-CCMS v------
+#*------v Reconnect-CCMS.ps1 v------
 Function Reconnect-CCMS {
     <# 
     .SYNOPSIS
@@ -58,4 +58,6 @@ AddedTwitter:	URL
       } ; 
       
   } ;     
-}#*------^ END Function Reconnect-CCMS ^------
+}
+
+#*------^ Reconnect-CCMS.ps1 ^------

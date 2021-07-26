@@ -1,3 +1,4 @@
+#*------v Disconnect-CCMS.ps1 v------
 Function Disconnect-CCMS {
     <#
     .SYNOPSIS
@@ -38,6 +39,8 @@ Function Disconnect-CCMS {
     # "https://ps.compliance.protection.outlook.com/powershell-liveid/" ; should still work below
     Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
     Disconnect-PssBroken ;
-    Remove-PSTitlebar 'CCMS' ;
+    Remove-PSTitlebar 'CCMS' -verbose:$($VerbosePreference -eq "Continue") ;
     [console]::ResetColor()  # reset console colorscheme
-} ; #*------^ END Function Disconnect-CCMS ^------
+}
+
+#*------^ Disconnect-CCMS.ps1 ^------

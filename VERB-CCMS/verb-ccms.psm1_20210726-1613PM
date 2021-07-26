@@ -1,4 +1,4 @@
-# verb-ccms.psm1
+﻿# verb-ccms.psm1
 
 
 <#
@@ -241,7 +241,7 @@ Function Connect-CCMS {
             #>
             Connect-IPPSSession -UserPrincipalName $Credential.UserName ;
 
-            Add-PSTitleBar $sTitleBarTag -verbose:$($VerbosePreference -eq "Continue") ;
+            Add-PSTitleBar $sTitleBarTag ;
         } catch {
             Write-Warning -Message "Failed to connect to EXO via the imported EXO PS module.`n`nError message:" ;
             throw $_ ;
@@ -297,7 +297,7 @@ Function Connect-CCMS {
                 $Host.UI.RawUI.BackgroundColor = $PSBgColor
                 $Host.UI.RawUI.ForegroundColor = $PSFgColor ; 
             } ;
-            Add-PSTitleBar 'cc' -verbose:$($VerbosePreference -eq "Continue");
+            Add-PSTitleBar 'cc' ;
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
@@ -350,7 +350,7 @@ Function Disconnect-CCMS {
     # "https://ps.compliance.protection.outlook.com/powershell-liveid/" ; should still work below
     Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
     Disconnect-PssBroken ;
-    Remove-PSTitlebar 'CCMS' -verbose:$($VerbosePreference -eq "Continue") ;
+    Remove-PSTitlebar 'CCMS' ;
     [console]::ResetColor()  # reset console colorscheme
 }
 
@@ -444,3 +444,29 @@ AddedTwitter:	URL
 
 Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,rccmsVEN,Reconnect-CCMS -Alias *
 
+
+# SIG # Begin signature block
+# MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
+# gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlDBuVaLYWtmR0Wf5ySEOeRVU
+# 4hegggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
+# Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
+# ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
+# a+NnFYNRPPa8Bnm071ohGe27jNWKPVUbDfd0OY2sqCBQCEFVb5pqcIECRRnlhN5H
+# +EEJmm2x9AU0uS7IHxHeUo8fkW4vm49adkat5gAoOZOwbuNntBOAJy9LCyNs4F1I
+# KKphP3TyDwe8XqsEVwB2m9FPAgMBAAGjdjB0MBMGA1UdJQQMMAoGCCsGAQUFBwMD
+# MF0GA1UdAQRWMFSAEL95r+Rh65kgqZl+tgchMuKhLjAsMSowKAYDVQQDEyFQb3dl
+# clNoZWxsIExvY2FsIENlcnRpZmljYXRlIFJvb3SCEGwiXbeZNci7Rxiz/r43gVsw
+# CQYFKw4DAh0FAAOBgQB6ECSnXHUs7/bCr6Z556K6IDJNWsccjcV89fHA/zKMX0w0
+# 6NefCtxas/QHUA9mS87HRHLzKjFqweA3BnQ5lr5mPDlho8U90Nvtpj58G9I5SPUg
+# CspNr5jEHOL5EdJFBIv3zI2jQ8TPbFGC0Cz72+4oYzSxWpftNX41MmEsZkMaADGC
+# AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
+# Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
+# AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBT5iCHS
+# D9Ve66Fy5E+Qx1fxRzJyhzANBgkqhkiG9w0BAQEFAASBgFd7ttHmedT7nReyZwlc
+# UdnQKxr/pgTlGhs3Uyoxq+ullxhvbPrpSt0bz24se4f1MbS55IaW78ZQH4u1mfgq
+# KjTTm0sooHLSVrMUmoEzk8ZEdEeCkSyxg3+1sITDuorJA4wOWn6E/+z5orga8JzW
+# gmdF8n02So18P5PQg9OEIIbH
+# SIG # End signature block

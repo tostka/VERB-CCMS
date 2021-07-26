@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.14.0
+Version     : 1.0.15.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -241,7 +241,7 @@ Function Connect-CCMS {
             #>
             Connect-IPPSSession -UserPrincipalName $Credential.UserName ;
 
-            Add-PSTitleBar $sTitleBarTag ;
+            Add-PSTitleBar $sTitleBarTag -verbose:$($VerbosePreference -eq "Continue") ;
         } catch {
             Write-Warning -Message "Failed to connect to EXO via the imported EXO PS module.`n`nError message:" ;
             throw $_ ;
@@ -297,7 +297,7 @@ Function Connect-CCMS {
                 $Host.UI.RawUI.BackgroundColor = $PSBgColor
                 $Host.UI.RawUI.ForegroundColor = $PSFgColor ; 
             } ;
-            Add-PSTitleBar 'cc' ;
+            Add-PSTitleBar 'cc' -verbose:$($VerbosePreference -eq "Continue");
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
             throw $_ ;
@@ -350,7 +350,7 @@ Function Disconnect-CCMS {
     # "https://ps.compliance.protection.outlook.com/powershell-liveid/" ; should still work below
     Get-PSSession | Where-Object {$_.ComputerName -like '*.outlook.com'} | Remove-PSSession ;
     Disconnect-PssBroken ;
-    Remove-PSTitlebar 'CCMS' ;
+    Remove-PSTitlebar 'CCMS' -verbose:$($VerbosePreference -eq "Continue") ;
     [console]::ResetColor()  # reset console colorscheme
 }
 
@@ -448,8 +448,8 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUlDBuVaLYWtmR0Wf5ySEOeRVU
-# 4hegggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUpmHBtUQptkPfjA97xCtOlumu
+# +OigggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -464,9 +464,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBT5iCHS
-# D9Ve66Fy5E+Qx1fxRzJyhzANBgkqhkiG9w0BAQEFAASBgFd7ttHmedT7nReyZwlc
-# UdnQKxr/pgTlGhs3Uyoxq+ullxhvbPrpSt0bz24se4f1MbS55IaW78ZQH4u1mfgq
-# KjTTm0sooHLSVrMUmoEzk8ZEdEeCkSyxg3+1sITDuorJA4wOWn6E/+z5orga8JzW
-# gmdF8n02So18P5PQg9OEIIbH
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSmQzlU
+# x9bvbfh8BKX985sjtOcyRTANBgkqhkiG9w0BAQEFAASBgHRZltrLQnGcF/eGPfoQ
+# +9M9udotZQIi7HshV1TIM5PELNXVAQUY2/KrKgBLOubFwFpN2AnQbKliCPNowxw3
+# nfY4VAo6F43XfLmYA8kD7V6s58U/cD0y+hzzMzLuH03jQ6bPYGgOtSrhRA4tqGCH
+# uqOX7wjCsnk6hOc/DAmdJXuP
 # SIG # End signature block
