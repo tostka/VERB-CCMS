@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.15.0
+Version     : 1.0.16.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -292,11 +292,13 @@ Function Connect-CCMS {
         Try {
             #$Global:CCMSModule = Import-Module (Import-PSSession $Global:CCMSSession -Prefix $CommandPrefix -DisableNameChecking -AllowClobber) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking   ;
             $Global:CCMSModule = Import-Module (Import-PSSession @pltPSS) -Global -Prefix $CommandPrefix -PassThru -DisableNameChecking -ErrorAction Stop  ;
+            <# rem'd unimplemented
             if(($PSFgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSFgColor) -AND ($PSBgColor = (Get-Variable  -name "$($TenOrg)Meta").value.PSBgColor)){
                 write-verbose "(setting console colors:$($TenOrg)Meta.PSFgColor:$($PSFgColor),PSBgColor:$($PSBgColor))" ; 
                 $Host.UI.RawUI.BackgroundColor = $PSBgColor
                 $Host.UI.RawUI.ForegroundColor = $PSFgColor ; 
             } ;
+            #>
             Add-PSTitleBar 'cc' -verbose:$($VerbosePreference -eq "Continue");
         } catch {
             Write-Warning -Message "Tried but failed to import the EXO PS module.`n`nError message:" ;
@@ -448,8 +450,8 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUpmHBtUQptkPfjA97xCtOlumu
-# +OigggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIIDuiIToIiBg9aA//Q2BNEGB
+# ycWgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -464,9 +466,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSmQzlU
-# x9bvbfh8BKX985sjtOcyRTANBgkqhkiG9w0BAQEFAASBgHRZltrLQnGcF/eGPfoQ
-# +9M9udotZQIi7HshV1TIM5PELNXVAQUY2/KrKgBLOubFwFpN2AnQbKliCPNowxw3
-# nfY4VAo6F43XfLmYA8kD7V6s58U/cD0y+hzzMzLuH03jQ6bPYGgOtSrhRA4tqGCH
-# uqOX7wjCsnk6hOc/DAmdJXuP
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQp8yNY
+# 6zhERW1+h81P2/1U5VOx8TANBgkqhkiG9w0BAQEFAASBgCnxfKybvLjN1UwP3J1o
+# D1YaTerfbya5cphwyc2GFcCwyO0hKhTKPOBVGarmRMJpMgbC9mEEWVgJB/2+RG6I
+# 0HY45yjmr1cX1eN1lc3HigF0sg8VbIAFHOU2U0zhT6ltfjsbTE7j/BK9H8s03t28
+# AOi0Z+8UDm80xvSa21chFrF9
 # SIG # End signature block
