@@ -18,6 +18,7 @@ AddedCredit : REFERENCE
 AddedWebsite:	URL
 AddedTwitter:	URL
     REVISIONS   :
+    * 11:20 AM 9/16/2021 string clean
     * 12:16 PM 5/27/2020 updated cbh, moved alias:rccms win func
     * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom
     * 2:53 PM 5/14/2020 added test & local spec for $rgxCCMSPsHostName, wo it, it can't detect disconnects
@@ -28,7 +29,7 @@ AddedTwitter:	URL
     .DESCRIPTION
     I use this for routine test/reconnect of CCMS.Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
     .PARAMETER  Credential
-    Credential to use for this connection [-credential 's-todd.kadrie@toro.com'] 
+    Credential to use for this connection [-credential 'SOMEACCT@DOMAIN.COM'] 
     .INPUTS
     None. Does not accepted piped input.
     .OUTPUTS
