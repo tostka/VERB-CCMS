@@ -5,7 +5,7 @@
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.17.0
+Version     : 1.0.16.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -398,7 +398,6 @@ AddedCredit : REFERENCE
 AddedWebsite:	URL
 AddedTwitter:	URL
     REVISIONS   :
-    * 11:20 AM 9/16/2021 string clean
     * 12:16 PM 5/27/2020 updated cbh, moved alias:rccms win func
     * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom
     * 2:53 PM 5/14/2020 added test & local spec for $rgxCCMSPsHostName, wo it, it can't detect disconnects
@@ -409,7 +408,7 @@ AddedTwitter:	URL
     .DESCRIPTION
     I use this for routine test/reconnect of CCMS.Port of my verb-EXO functs for o365 Sec & Compliance Ctr RemPS
     .PARAMETER  Credential
-    Credential to use for this connection [-credential 'SOMEACCT@DOMAIN.COM'] 
+    Credential to use for this connection [-credential 's-todd.kadrie@toro.com'] 
     .INPUTS
     None. Does not accepted piped input.
     .OUTPUTS
@@ -451,8 +450,8 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUla1p7gnWp4mQup8IXHfRpX0m
-# G5ugggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUIIDuiIToIiBg9aA//Q2BNEGB
+# ycWgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -467,9 +466,9 @@ Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,D
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBRBXFN5
-# i9ZXNA9JL2QveO2Fq04KkDANBgkqhkiG9w0BAQEFAASBgFAx4BlV5c0M+lJcnUwp
-# tQHRyVMQjjgHcGQE12+g93U2YcJugjFb4d/pDMfz3Td8/rnxn5Tq5gYdHJQ6SLjd
-# mtn6QqTJjjtXE0svQonqCPFh83Nc0oFAepHlBKmynyXKgppD09fgmckL1XPrdhXa
-# SGUuwlYbI3QpoKP6UN0Cx/Gf
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQp8yNY
+# 6zhERW1+h81P2/1U5VOx8TANBgkqhkiG9w0BAQEFAASBgCnxfKybvLjN1UwP3J1o
+# D1YaTerfbya5cphwyc2GFcCwyO0hKhTKPOBVGarmRMJpMgbC9mEEWVgJB/2+RG6I
+# 0HY45yjmr1cX1eN1lc3HigF0sg8VbIAFHOU2U0zhT6ltfjsbTE7j/BK9H8s03t28
+# AOi0Z+8UDm80xvSa21chFrF9
 # SIG # End signature block
