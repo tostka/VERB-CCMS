@@ -1,4 +1,4 @@
-#rebuild-module.ps1
+﻿#rebuild-module.ps1
 
 <#
 .SYNOPSIS

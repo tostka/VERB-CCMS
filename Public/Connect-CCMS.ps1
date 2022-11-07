@@ -1,4 +1,4 @@
-#*------v Connect-CCMS.ps1 v------
+﻿#*------v Connect-CCMS.ps1 v------
 Function Connect-CCMS {
     <#
     .SYNOPSIS

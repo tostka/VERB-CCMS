@@ -1,4 +1,4 @@
-#*------v Reconnect-CCMS.ps1 v------
+﻿#*------v Reconnect-CCMS.ps1 v------
 Function Reconnect-CCMS {
     <# 
     .SYNOPSIS

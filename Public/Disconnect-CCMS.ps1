@@ -1,4 +1,4 @@
-#*------v Disconnect-CCMS.ps1 v------
+﻿#*------v Disconnect-CCMS.ps1 v------
 Function Disconnect-CCMS {
     <#
     .SYNOPSIS
