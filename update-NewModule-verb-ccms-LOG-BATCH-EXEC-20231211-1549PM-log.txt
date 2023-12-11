@@ -1,0 +1,609 @@
+﻿2023-12-11 15:49:40 INFO:  : #*======v VERB-dev.psm1:verb-ccms v======
+2023-12-11 15:49:40 VERBOSE:  : $modRoot is blank, assigning from mandetory param:$ModDirPath
+2023-12-11 15:49:42 INFO:  : Run: reset-ModulePublishingDirectory -ModuleName verb-ccms
+2023-12-11 15:49:42 ##  : 
+#*------v PROCESSING : verb-ccms v------
+2023-12-11 15:49:42 INFO:  : Pre-purge (CHANGELOG|README)\.md$ Root dir matches from :
+2023-12-11 15:49:42 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Resource\
+2023-12-11 15:49:42 VERBOSE:  : Reset module Resource files (purge from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:42 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Licenses\
+2023-12-11 15:49:42 VERBOSE:  : Reset module Licenses files (purge from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:42 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Docs\
+2023-12-11 15:49:42 VERBOSE:  : Reset module Docs files (purge from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:43 INFO:  : ==C:\sc\verb-ccms\CHANGELOG.md:
+2023-12-11 15:49:43 INFO:  : ==C:\sc\verb-ccms\README.md:
+2023-12-11 15:49:43 INFO:  : ==C:\sc\verb-ccms\Docs\Quick-Start-Installation-and-Example.md:
+2023-12-11 15:49:43 ##  : 
+#*------^ PROCESSING : verb-ccms ^------
+2023-12-11 15:49:43 INFO:  : Run: populate-ModulePublishingDirectory -ModuleName verb-ccms
+2023-12-11 15:49:43 ##  : 
+#*------v PROCESSING : verb-ccms v------
+2023-12-11 15:49:43 INFO:  : Locating (CHANGELOG|README)\.md$ Root dir matches from :
+2023-12-11 15:49:43 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Resource\
+2023-12-11 15:49:43 VERBOSE:  : Recopy module Resource files (copy from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:43 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Licenses\
+2023-12-11 15:49:43 VERBOSE:  : Recopy module Licenses files (copy from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:43 INFO:  : verb-ccms resolved $ModPubPath:C:\sc\verb-ccms\verb-ccms\
+$ModResPath:C:\sc\verb-ccms\Docs\
+2023-12-11 15:49:44 VERBOSE:  : Recopy module Docs files (copy from C:\sc\verb-ccms\verb-ccms\)
+2023-12-11 15:49:44 INFO:  : copy-item w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+path                           {C:\sc\verb-ccms\CHANGELOG.md, C:\sc\verb-ccms\README.md, C:\sc\verb-ccms\Docs\Quick-Start-Installation-and-Example.md}                                                                                                
+destination                    C:\sc\verb-ccms\verb-ccms\                                                                                                                                                                                             
+force                          True                                                                                                                                                                                                                   
+erroraction                    STOP                                                                                                                                                                                                                   
+verbose                        True                                                                                                                                                                                                                   
+whatif                         False
+--$pltCI.path:
+C:\sc\verb-ccms\CHANGELOG.md
+C:\sc\verb-ccms\README.md
+C:\sc\verb-ccms\Docs\Quick-Start-Installation-and-Example.md
+2023-12-11 15:49:45 ##  : 
+#*------^ PROCESSING : verb-ccms ^------
+2023-12-11 15:49:45 INFO:  : Validate updated verb-ccms\verb-ccms dir contents against Manifest:
+Run: test-modulemanifest -Path C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1
+2023-12-11 15:49:45 VERBOSE:  : (no $ttmm_Err: test-ModuleManifest had no errors)
+2023-12-11 15:49:45 INFO:  : NON-Republish pass detected:
+MERGE parm specified as well:`n-Merge Public|Internal|Classes include subdirs module content into updated .psm1
+-Sign updated files.
+-Uninstall/Remove existing profile module
+-Copy new module to profile
+-Confirm: Get-Module -ListAvailable
+-Check/Update existing Psd1 Version
+-Publish-Module
+-Remove existing installed profile module
+-Test Install-Module
+-Test Import-Module
+2023-12-11 15:49:46 INFO:  : -Merge specified...
+2023-12-11 15:49:46 INFO:  : ConvertTo-ModuleMergedTDO w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModuleName                     verb-ccms                                                                                                                                                                                                              
+ModuleSourcePath               {c:\sc\verb-ccms\Public, c:\sc\verb-ccms\Internal}                                                                                                                                                                     
+ModuleDestinationPath          c:\sc\verb-ccms\verb-ccms                                                                                                                                                                                              
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+LogSpec                        {logging, logfile, transcript}                                                                                                                                                                                         
+NoAliasExport                                                                                                                                                                                                                                         
+ErrorAction                    Stop                                                                                                                                                                                                                   
+showdebug                      False                                                                                                                                                                                                                  
+whatif                         False
+2023-12-11 15:49:46 INFO:  : ConvertTo-ModuleMergedTDO w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModuleName                     verb-ccms                                                                                                                                                                                                              
+ModuleSourcePath               {c:\sc\verb-ccms\Public, c:\sc\verb-ccms\Internal}                                                                                                                                                                     
+ModuleDestinationPath          c:\sc\verb-ccms\verb-ccms                                                                                                                                                                                              
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+LogSpec                        {logging, logfile, transcript}                                                                                                                                                                                         
+NoAliasExport                                                                                                                                                                                                                                         
+ErrorAction                    Stop                                                                                                                                                                                                                   
+showdebug                      False                                                                                                                                                                                                                  
+whatif                         False
+2023-12-11 15:49:47 INFO:  : (NON-dyn psm1 detected - purging existing non-CBH content...)
+2023-12-11 15:49:48 INFO:  : Initialize-PSModuleDirectories w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModuleSourcePath               {c:\sc\verb-ccms\Public, c:\sc\verb-ccms\Internal}                                                                                                                                                                     
+ModuleDestinationPath          c:\sc\verb-ccms\verb-ccms                                                                                                                                                                                              
+ErrorAction                    Stop                                                                                                                                                                                                                   
+whatif                         False
+2023-12-11 15:49:48 INFO:  : 
+#*------v (1/2):C:\sc\verb-ccms\Public v------
+2023-12-11 15:49:48 INFO:  : Processing 11 $ComponentScripts files through Remove-AuthenticodeSignature...
+2023-12-11 15:49:48 INFO:  : Remove-AuthenticodeSignature w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           {C:\sc\verb-ccms\Public\cccmsCMW.ps1, C:\sc\verb-ccms\Public\cccmsTOL.ps1, C:\sc\verb-ccms\Public\cccmsTOR.ps1, C:\sc\verb-ccms\Public\cccmsVEN.ps1...}                                                                
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:49:49 INFO:  : Processing (1/11):C:\sc\verb-ccms\Public\cccmsCMW.ps1...
+2023-12-11 15:49:49 INFO:  : Processing (2/11):C:\sc\verb-ccms\Public\cccmsTOL.ps1...
+2023-12-11 15:49:49 INFO:  : Processing (3/11):C:\sc\verb-ccms\Public\cccmsTOR.ps1...
+2023-12-11 15:49:50 INFO:  : Processing (4/11):C:\sc\verb-ccms\Public\cccmsVEN.ps1...
+2023-12-11 15:49:50 INFO:  : Processing (5/11):C:\sc\verb-ccms\Public\Connect-CCMS.ps1...
+2023-12-11 15:49:54 INFO:  : Processing (6/11):C:\sc\verb-ccms\Public\Disconnect-CCMS.ps1...
+2023-12-11 15:49:55 INFO:  : Processing (7/11):C:\sc\verb-ccms\Public\rccmsCMW.ps1...
+2023-12-11 15:49:55 INFO:  : Processing (8/11):C:\sc\verb-ccms\Public\rccmsTOL.ps1...
+2023-12-11 15:49:56 INFO:  : Processing (9/11):C:\sc\verb-ccms\Public\rccmsTOR.ps1...
+2023-12-11 15:49:56 INFO:  : Processing (10/11):C:\sc\verb-ccms\Public\rccmsVEN.ps1...
+2023-12-11 15:49:56 INFO:  : Processing (11/11):C:\sc\verb-ccms\Public\Reconnect-CCMS.ps1...
+2023-12-11 15:49:57 INFO:  : 
+#*------^ (1/2):C:\sc\verb-ccms\Public ^------
+2023-12-11 15:49:57 INFO:  : 
+#*------v (2/2):C:\sc\verb-ccms\Internal v------
+2023-12-11 15:49:58 INFO:  : Processing 0 $ComponentScripts files through Remove-AuthenticodeSignature...
+2023-12-11 15:49:58 INFO:  : Remove-AuthenticodeSignature w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                                                                                                                                                                                                                                                  
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:49:58 INFO:  : 
+#*------^ (2/2):C:\sc\verb-ccms\Internal ^------
+2023-12-11 15:49:58 INFO:  : (Updating Psm1 Export-ModuleMember -Function to reflect Public modules)
+2023-12-11 15:49:58 INFO:  : Adding:FooterBlock...
+2023-12-11 15:49:58 INFO:  : Updating the Psd1 FunctionsToExport to match
+2023-12-11 15:49:59 INFO:  : confirm-ModuleBuildSync w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModPsdPath                     c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+NoTest                         True                                                                                                                                                                                                                   
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:49:59 INFO:  : #*======v confirm-ModuleBuildSync:  v======
+2023-12-11 15:50:00 INFO:  : (test-path confirms $ModPsm1 & $ModTestPs1)
+2023-12-11 15:50:00 INFO:  : Import-PowerShellDataFile w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+ErrorAction                    Stop                                                                                                                                                                                                                   
+verbose                        True
+2023-12-11 15:50:00 INFO:  : (resolved Module attributes:
+$ModuleName:	verb-ccms
+$ModRoot:	c:\sc\verb-ccms
+$ModPsd1:	c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP
+$ModPsm1:	c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP
+$ModTestPs1:	c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+$psd1Vers:	1.0.19
+$psd1guid:	057a7f09-79e4-4db7-af1c-02db0c702b5e)
+2023-12-11 15:50:00 INFO:  : confirm-ModulePsd1Version w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:00 INFO:  : #*======v confirm-ModulePsd1Version: c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP v======
+2023-12-11 15:50:00 WARNING:  : In:c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP
+Version present:(1.0.19)
+*does not* properly match:1.0.20
+FORCING MATCHING UPDATE!
+2023-12-11 15:50:01 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:01 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:01 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:01 INFO:  : #*======^ confirm-ModulePsd1Version: c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP ^======
+2023-12-11 15:50:01 INFO:  : (confirm-ModulePsd1Version:Success)
+2023-12-11 15:50:01 INFO:  : confirm-ModulePsm1Version w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP                                                                                                                                                                           
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:02 INFO:  : #*======v confirm-ModulePsm1Version: c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP v======
+2023-12-11 15:50:02 WARNING:  : In:c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP
+Version present:(1.0.19)
+*does not* properly match:1.0.20
+FORCING MATCHING UPDATE!
+2023-12-11 15:50:03 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:03 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:03 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:03 INFO:  : #*======^ confirm-ModulePsm1Version: c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP ^======
+2023-12-11 15:50:04 INFO:  : (confirm-ModulePsm1Version:Success)
+2023-12-11 15:50:04 INFO:  : (-NoTest: skipping confirm-ModuleTestPs1Guid)
+2023-12-11 15:50:04 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+Module                         c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP                                                                                                                                                                           
+Pester                         (SKIPPED)                                                                                                                                                                                                              
+Guid                           (SKIPPED)                                                                                                                                                                                                              
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:04 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:04 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+Module                         c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP                                                                                                                                                                           
+Pester                         (SKIPPED)                                                                                                                                                                                                              
+Guid                           (SKIPPED)                                                                                                                                                                                                              
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:04 INFO:  : #*======^ confirm-ModuleBuildSync:  ^======
+2023-12-11 15:50:04 INFO:  : (confirm-ModuleBuildSync:Success)
+2023-12-11 15:50:04 INFO:  : Test-ModuleTMPFiles w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModuleNamePSM1Path             c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP                                                                                                                                                                           
+verbose                        True
+2023-12-11 15:50:04 INFO:  : #*======v Test-ModuleTMPFiles: c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP v======
+2023-12-11 15:50:04 INFO:  : 
+Psm1:c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP
+Psd1:c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP
+2023-12-11 15:50:04 INFO:  : Creating Testable c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psd1
+ to validate c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP will Test-ModuleManifest
+2023-12-11 15:50:04 INFO:  : Test-ModuleManifest w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+verbose                        True                                                                                                                                                                                                                   
+Path                           c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psd1                                                                                                                                                    
+ErrorVariable                  vManiErr                                                                                                                                                                                                               
+ErrorAction                    STOP
+2023-12-11 15:50:04 INFO:  : Test-ModuleManifest:PASSED
+2023-12-11 15:50:04 INFO:  : Creating Testable c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psm1
+ to validate c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP will Import-Module
+2023-12-11 15:50:04 INFO:  : n import-module w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Name                           c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psm1                                                                                                                                                    
+Force                          True                                                                                                                                                                                                                   
+verbose                        True                                                                                                                                                                                                                   
+ErrorAction                    STOP                                                                                                                                                                                                                   
+ErrorVariable                  vIpMoErr                                                                                                                                                                                                               
+PassThru                       True
+2023-12-11 15:50:05 INFO:  : Ipmo: PASSED
+2023-12-11 15:50:05 INFO:  : (remove-module -name c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psm1 -force)
+2023-12-11 15:50:05 INFO:  : (remove-item -path c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psm1 -ErrorAction SilentlyContinue ; 
+2023-12-11 15:50:05 INFO:  : (remove-item -path c:\sc\verb-ccms\verb-ccms\1add9e8e-007f-426b-98c0-6323aa43ac4a.psd1 -ErrorAction SilentlyContinue ; 
+2023-12-11 15:50:05 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       1add9e8e-007f-426b-98c0-6323aa43ac4a                                                                                                                                                                                   
+Module                         1add9e8e-007f-426b-98c0-6323aa43ac4a                                                                                                                                                                                   
+Valid                          False
+2023-12-11 15:50:05 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:05 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       1add9e8e-007f-426b-98c0-6323aa43ac4a                                                                                                                                                                                   
+Module                         1add9e8e-007f-426b-98c0-6323aa43ac4a                                                                                                                                                                                   
+Valid                          True
+2023-12-11 15:50:05 INFO:  : #*======^ Test-ModuleTMPFiles: c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP ^======
+2023-12-11 15:50:05 INFO:  : Processing error free: Overwriting temp .psm1 with temp copy
+copy-item w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Destination                    c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1                                                                                                                                                                               
+Path                           c:\sc\verb-ccms\verb-ccms\verb-ccms.psm1_TMP                                                                                                                                                                           
+whatif                         False                                                                                                                                                                                                                  
+ErrorAction                    STOP
+2023-12-11 15:50:05 INFO:  : Processing error free: Overwriting temp .psd1 with temp copy
+copy-item w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Destination                    c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+Path                           c:\sc\verb-ccms\verb-ccms\verb-ccms.psd1_TMP                                                                                                                                                                           
+whatif                         False                                                                                                                                                                                                                  
+ErrorAction                    STOP
+2023-12-11 15:50:05 INFO:  : #*======^ ConvertTo-ModuleMergedTDO: ^======
+2023-12-11 15:50:05 VERBOSE:  : (no $ttmm_Err: test-ModuleManifest had no errors)
+2023-12-11 15:50:05 INFO:  : (Test-ModuleManifest:PASSED)
+2023-12-11 15:50:05 INFO:  : Checking sync of Psd1 module guid to the Pester Test Script: c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+2023-12-11 15:50:06 INFO:  : confirm-ModuleBuildSync w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModPsdPath                     C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:07 INFO:  : #*======v confirm-ModuleBuildSync:  v======
+2023-12-11 15:50:07 INFO:  : (test-path confirms $ModPsm1 & $ModTestPs1)
+2023-12-11 15:50:07 INFO:  : Import-PowerShellDataFile w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+ErrorAction                    Stop                                                                                                                                                                                                                   
+verbose                        True
+2023-12-11 15:50:07 INFO:  : (resolved Module attributes:
+$ModuleName:	verb-ccms
+$ModRoot:	c:\sc\verb-ccms
+$ModPsd1:	C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1
+$ModPsm1:	C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1
+$ModTestPs1:	c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+$psd1Vers:	1.0.20
+$psd1guid:	057a7f09-79e4-4db7-af1c-02db0c702b5e)
+2023-12-11 15:50:08 INFO:  : confirm-ModulePsd1Version w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:08 INFO:  : #*======v confirm-ModulePsd1Version: C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1 v======
+2023-12-11 15:50:08 INFO:  : (Version already updated to match)
+2023-12-11 15:50:08 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:08 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:08 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:08 INFO:  : #*======^ confirm-ModulePsd1Version: C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1 ^======
+2023-12-11 15:50:09 INFO:  : (confirm-ModulePsd1Version:Success)
+2023-12-11 15:50:09 INFO:  : confirm-ModulePsm1Version w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1                                                                                                                                                                               
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:09 INFO:  : #*======v confirm-ModulePsm1Version: C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1 v======
+2023-12-11 15:50:09 INFO:  : (Version already updated to match)
+2023-12-11 15:50:09 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:09 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:09 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:09 INFO:  : #*======^ confirm-ModulePsm1Version: C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1 ^======
+2023-12-11 15:50:10 INFO:  : (confirm-ModulePsm1Version:Success)
+2023-12-11 15:50:10 INFO:  : Checking sync of Psd1 module guid to the Pester Test Script: c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+2023-12-11 15:50:10 INFO:  : confirm-ModuleTestPs1Guid w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1                                                                                                                                                                              
+RequiredGuid                   057a7f09-79e4-4db7-af1c-02db0c702b5e                                                                                                                                                                                   
+whatif                         False                                                                                                                                                                                                                  
+verbose                        True
+2023-12-11 15:50:10 INFO:  : #*======v confirm-ModuleTestPs1Guid: c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1 v======
+2023-12-11 15:50:10 INFO:  : (Guid  already updated to match)
+2023-12-11 15:50:11 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Guid                           057a7f09-79e4-4db7-af1c-02db0c702b5e                                                                                                                                                                                   
+Valid                          False
+2023-12-11 15:50:11 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:11 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Guid                           057a7f09-79e4-4db7-af1c-02db0c702b5e                                                                                                                                                                                   
+Valid                          True
+2023-12-11 15:50:11 INFO:  : #*======^ confirm-ModuleTestPs1Guid: c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1 ^======
+2023-12-11 15:50:11 INFO:  : (confirm-ModuleTestPs1Guid:Success)
+2023-12-11 15:50:11 INFO:  : $objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+Module                         C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1                                                                                                                                                                               
+Pester                         c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1                                                                                                                                                                              
+Guid                           057a7f09-79e4-4db7-af1c-02db0c702b5e                                                                                                                                                                                   
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          False
+2023-12-11 15:50:11 INFO:  : (SET:$objReport.Valid = $true ;)
+2023-12-11 15:50:11 INFO:  : (PIPELINE:New-Object PSObject -Property $objReport | write-output)
+$objReport
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Manifest                       C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1                                                                                                                                                                               
+Module                         C:\sc\verb-ccms\verb-ccms\verb-ccms.psm1                                                                                                                                                                               
+Pester                         c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1                                                                                                                                                                              
+Guid                           057a7f09-79e4-4db7-af1c-02db0c702b5e                                                                                                                                                                                   
+Version                        1.0.20                                                                                                                                                                                                                 
+Valid                          True
+2023-12-11 15:50:12 INFO:  : #*======^ confirm-ModuleBuildSync:  ^======
+2023-12-11 15:50:12 INFO:  : (confirm-ModuleBuildSync:Success)
+2023-12-11 15:50:12 VERBOSE:  : $Psd1filelist populated: xXML:c:\sc\verb-ccms\Psd1filelist
+2023-12-11 15:50:12 INFO:  : Updating the Psd1 FileList to with populated $Psd1filelist...
+2023-12-11 15:50:13 INFO:  : Signing appropriate files...
+2023-12-11 15:50:14 INFO:  : Sign-file w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+file                           {C:\sc\verb-ccms\rebuild-module.ps1, C:\sc\verb-ccms\requirements.psd1, C:\sc\verb-ccms\Tests\PPoShScriptingStyle.psd1, C:\sc\verb-ccms\Tests\ToddomationScriptingStyle-medium.psd1...}                                
+ErrorAction                    Stop                                                                                                                                                                                                                   
+showdebug                      False                                                                                                                                                                                                                  
+whatif                         False
+2023-12-11 15:50:15 INFO:  : Removing existing profile verb-ccms content...
+2023-12-11 15:50:15 INFO:  : Uninstall-ModuleForce w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+ModuleName                     verb-ccms                                                                                                                                                                                                              
+Verbose                        True                                                                                                                                                                                                                   
+whatif                         False
+2023-12-11 15:50:38 INFO:  : 
+#*------v Uninstall PSGet Mod:VERB-CCMS:v1.0.18 v------
+2023-12-11 15:50:38 INFO:  : Uninstall-Script w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Force                          True                                                                                                                                                                                                                   
+Whatif                         False                                                                                                                                                                                                                  
+Verbose                        True
+2023-12-11 15:52:10 INFO:  : 
+#*------^ Uninstall PSGet Mod:VERB-CCMS:v1.0.18 ^------
+2023-12-11 15:52:10 INFO:  : (Processing $env:PSModulePath paths, for surviving locked copies of verb-ccms to *manually* purge...)
+2023-12-11 15:52:10 INFO:  : Checking: verb-ccms below: C:\Users\kadritss\Documents\WindowsPowerShell\Modules...
+2023-12-11 15:52:10 INFO:  : Checking: verb-ccms below: C:\ProgramData\Boxstarter...
+2023-12-11 15:52:10 INFO:  : Checking: verb-ccms below: C:\Program Files\WindowsPowerShell\Modules...
+2023-12-11 15:52:10 INFO:  : Checking: verb-ccms below: C:\Windows\system32\WindowsPowerShell\v1.0\Modules...
+2023-12-11 15:52:10 INFO:  : Checking: verb-ccms below: C:\Program Files\Microsoft Message Analyzer\PowerShell\...
+2023-12-11 15:52:10 INFO:  : (no $sRet returned on call)
+2023-12-11 15:52:10 INFO:  : Copying module to profile (net of .git & .vscode dirs, and backed up content)...
+2023-12-11 15:52:11 INFO:  : $srcFiles:post-filter out:
+\\(Package|Tests|logs)\\|(\.ps[dm]1_(\d+-\d+[AP]M|TMP)|-LOG-BATCH-EXEC-\d+-\d+[AP]M-log\.txt|\\(fingerprint|Psd1filelist))$
+2023-12-11 15:52:11 INFO:  : Discovered mod-copy files ($srcFiles.fullname):w
+C:\sc\verb-ccms\VERB-CCMS\CHANGELOG.md
+C:\sc\verb-ccms\VERB-CCMS\LICENSE.txt
+C:\sc\verb-ccms\VERB-CCMS\Quick-Start-Installation-and-Example.md
+C:\sc\verb-ccms\VERB-CCMS\README.md
+C:\sc\verb-ccms\VERB-CCMS\VERB-CCMS.psd1
+C:\sc\verb-ccms\VERB-CCMS\VERB-CCMS.psm1
+2023-12-11 15:52:11 INFO:  : Non-Pre-existing:$to:C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms
+Pre-creating before copy...
+2023-12-11 15:52:11 INFO:  : Mode   LastWriteTime         Length Name     
+----   -------------         ------ ----     
+d----- 12/11/2023 3:52:11 PM        verb-ccms
+2023-12-11 15:52:11 INFO:  : -Merge:exclude $MergeBuildExcl \\(Public|Internal|External|Private)\\.*.ps1$ files from temp build copy
+2023-12-11 15:52:12 INFO:  : Recursively remove empty subdirs below C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms...
+2023-12-11 15:52:13 INFO:  : Move/Flatten Resource etc files into root of temp Build dir...
+2023-12-11 15:52:13 INFO:  : Unable to locate a problematic temp mod dir C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms COPY of Quick-Start-Installation-and-Example.md
+2023-12-11 15:52:13 INFO:  : Unable to locate a problematic temp mod dir C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms COPY of CHANGELOG.md
+2023-12-11 15:52:13 INFO:  : Unable to locate a problematic temp mod dir C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms COPY of LICENSE.txt
+2023-12-11 15:52:14 INFO:  : Unable to locate a problematic temp mod dir C:\Users\kadritss\Documents\WindowsPowerShell\Modules\verb-ccms\verb-ccms COPY of README.md
+2023-12-11 15:52:14 INFO:  : copy/Flatten Resource etc files into source root c:\sc\verb-ccms\verb-ccms dir...
+2023-12-11 15:52:14 INFO:  : Resolved $ModPsdPath:
+C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1
+2023-12-11 15:52:15 VERBOSE:  : resolve-path the CUMods verb-ccms.psd1 location
+2023-12-11 15:52:15 INFO:  : 
+==Verifying CU:Mods\verb-ccms\verb-ccms\Quick-Start-Installation-and-Example.md:
+2023-12-11 15:52:15 INFO:  : 
+==Verifying CU:Mods\verb-ccms\verb-ccms\CHANGELOG.md:
+2023-12-11 15:52:15 INFO:  : 
+==Verifying CU:Mods\verb-ccms\verb-ccms\LICENSE.txt:
+2023-12-11 15:52:15 INFO:  : 
+==Verifying CU:Mods\verb-ccms\verb-ccms\README.md:
+2023-12-11 15:52:15 INFO:  : Running pre-Publish-Module .psd1 test:
+Test-ModuleManifest -path C:\sc\verb-ccms\verb-ccms\verb-ccms.psd1
+2023-12-11 15:52:15 VERBOSE:  : (no $ttmm_Err: test-ModuleManifest had no errors)
+2023-12-11 15:52:15 INFO:  : (Test-ModuleManifest:PASSED)
+2023-12-11 15:52:15 INFO:  : (Profiling Repo: get-PSRepository -name lyncRepo...)
+2023-12-11 15:52:16 VERBOSE:  : (confirmed:$tRepo.PublishLocation accessible)
+2023-12-11 15:52:17 INFO:  : 
+Publish-Module w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Name                           verb-ccms                                                                                                                                                                                                              
+Repository                     lyncRepo                                                                                                                                                                                                               
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+Verbose                        True                                                                                                                                                                                                                   
+ErrorAction                    Stop                                                                                                                                                                                                                   
+errorVariable                  pbmo_Err                                                                                                                                                                                                               
+whatif                         False
+2023-12-11 15:53:11 WARNING:  :  FOUND $pbmo_Err: import-module HAD ERRORS! (no action, could be non-impacting)
+2023-12-11 15:53:11 WARNING:  :  Publish-Module PBMO UNDEFINED ERROR! System.Management.Automation.StopUpstreamCommandsException: System error.     at Microsoft.PowerShell.Commands.SelectObjectCommand.ProcessRecord()     at System.Management.Automation.CommandProcessor.ProcessRecord() (But PublishModule doesn't bother to return a functional Error object with an Exception, so we can't trust/parse or act on it. Just echo)
+2023-12-11 15:53:11 INFO:  : Waiting for:find-module -name verb-ccms -Repository lyncRepo ...
+2023-12-11 15:53:22 INFO:  : Install-Module w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Name                           verb-ccms                                                                                                                                                                                                              
+Repository                     lyncRepo                                                                                                                                                                                                               
+RequiredVersion                1.0.20                                                                                                                                                                                                                 
+scope                          CurrentUser                                                                                                                                                                                                            
+force                          True                                                                                                                                                                                                                   
+AllowClobber                   True                                                                                                                                                                                                                   
+errorVariable                  ismo_Err                                                                                                                                                                                                               
+ErrorAction                    Stop                                                                                                                                                                                                                   
+whatif                         False
+2023-12-11 15:54:04 VERBOSE:  : (no $ismo_Err: Install-Module had no errors)
+2023-12-11 15:54:04 INFO:  : Testing Module:Import-Module w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Name                           verb-ccms                                                                                                                                                                                                              
+ErrorAction                    Stop                                                                                                                                                                                                                   
+errorVariable                  ipmo_Err                                                                                                                                                                                                               
+force                          True                                                                                                                                                                                                                   
+verbose                        True
+2023-12-11 15:54:05 VERBOSE:  : (no $ipmo_Err: test-ModuleManifest had no errors)
+2023-12-11 15:54:05 INFO:  : Retrieving matching Repo .nupkg file:
+gci \\lynmsv10\lync_fs\scripts\sc\verb-ccms.1.0.20.nupkgl..
+2023-12-11 15:54:05 INFO:  : Proper updated .nupkg file found:verb-ccms.1.0.20.nupkg, copying to local Pkg directory.
+2023-12-11 15:54:05 INFO:  : remove-UnneededFileVariants w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\Package                                                                                                                                                                                                
+Include                        verb-ccms*.nupkg                                                                                                                                                                                                       
+Pattern                                                                                                                                                                                                                                               
+FilterOn                       CreationTime                                                                                                                                                                                                           
+Keep                           2                                                                                                                                                                                                                      
+KeepToday                      True                                                                                                                                                                                                                   
+verbose                        True                                                                                                                                                                                                                   
+whatif                         False
+2023-12-11 15:54:05 INFO:  : remove-UnneededFileVariants w
+Name                           Value                                                                                                                                                                                                                  
+----                           -----                                                                                                                                                                                                                  
+Path                           c:\sc\verb-ccms\Tests                                                                                                                                                                                                  
+Include                        ScriptAnalyzer-Results-*.xml                                                                                                                                                                                           
+Pattern                                                                                                                                                                                                                                               
+FilterOn                       CreationTime                                                                                                                                                                                                           
+Keep                           4                                                                                                                                                                                                                      
+KeepToday                      True                                                                                                                                                                                                                   
+verbose                        True                                                                                                                                                                                                                   
+whatif                         False
+2023-12-11 15:54:06 INFO:  : -RunTest specified: Running Pester Test script:
+c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+
+2023-12-11 15:56:23 INFO:  : 
+---------------------------------------------------------------------------------
+Processing completed: verb-ccms :: c:\sc\verb-ccms
+- Script is currently installed (from PsRep: with scope:CurrentUser, under TORO\kadriTSS profile
+
+- To update other scopes/accounts on same machine, or install on other machines:
+    1. Uninstall current module copies:
+
+        Uninstall-Module -Name verb-ccms) -AllVersion -whatif ;
+
+    2. Install the current version (or higher) from the Repo:lyncRepo:
+
+        install-Module -name verb-ccms -Repository lyncRepo -MinimumVersion 1.0.20 -scope currentuser -whatif ;
+
+    3. Reimport the module with -force, to ensure the current installed verison is loaded:
+
+        import-Module -name verb-ccms -force -verbose ;
+
+#-=-Stacked list: Unwrap to create a 1-liner for the above: CURRENTUSER =-=-=-=-=-=-=
+$whatif=$false ; $tMod = 'verb-ccms' ; $tVer = '1.0.20' ;  $tScop = 'CurrentUser' ;
+TRY {
+Remove-Module -Name $tmod -ea 0 ;
+Uninstall-Module -Name $tmod -AllVersion -whatif:$($whatif) ;
+install-Module -name $tmod -Repository 'lyncRepo' -MinimumVersion $tVer -scope $tScop -AllowClobber -whatif:$($whatif) ;
+import-Module -name $tmod -force -verbose ;
+} CATCH {
+Write-Warning "Failed processing $($_.Exception.ItemName). 
+Error Message: $($_.Exception.Message)
+Error Details: $($_)" ; Break ;
+} ;
+#-=-=-=-=-=-=-=-=
+#-=-Stacked list: Unwrap to create a 1-liner for the above: ALLUSERS =-=-=-=-=-=-=
+$whatif=$false ; $tMod = 'verb-ccms' ; $tVer = '1.0.20' ;  $tScop = 'AllUsers' ;
+TRY {
+Remove-Module -Name $tmod -ea 0 ;
+Uninstall-Module -Name $tmod -AllVersion -whatif:$($whatif) ;
+install-Module -name $tmod -Repository 'lyncRepo' -MinimumVersion $tVer -scope $tScop -AllowClobber -whatif:$($whatif) ;
+import-Module -name $tmod -force -verbose ;
+} CATCH {
+Write-Warning "Failed processing $($_.Exception.ItemName). 
+Error Message: $($_.Exception.Message)
+Error Details: $($_)" ; Break ;
+} ;
+#-=-=-=-=-=-=-=-=
+
+- You may also want to run the configured Pester Tests of the new script:
+
+        . c:\sc\verb-ccms\Tests\verb-ccms.tests.ps1
+
+Full Processing Details can be found in:
+
+c:\scripts\logs\update-NewModule-verb-ccms-LOG-BATCH-EXEC-20231211-1549PM-log.txt
+
+---------------------------------------------------------------------------------
+
+2023-12-11 15:56:23 INFO:  : 
+(Processing log can be found at:c:\sc\verb-ccms\c:\scripts\logs\update-NewModule-verb-ccms-LOG-BATCH-EXEC-20231211-1549PM-log.txt)

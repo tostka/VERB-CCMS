@@ -1,11 +1,11 @@
-# verb-ccms.psm1
+﻿# verb-ccms.psm1
 
 
 <#
 .SYNOPSIS
 VERB-CCMS - o365 Security & Compliance PS Module-related generic functions
 .NOTES
-Version     : 1.0.17.0
+Version     : 1.0.20.0
 Author      : Todd Kadrie
 Website     :	https://www.toddomation.com
 Twitter     :	@tostka
@@ -35,10 +35,12 @@ https://github.com/tostka/verb-CCMS
 #>
 
 
-$script:ModuleRoot = $PSScriptRoot ;
-$script:ModuleVersion = (Import-PowerShellDataFile -Path (get-childitem $script:moduleroot\*.psd1).fullname).moduleversion ;
+    $script:ModuleRoot = $PSScriptRoot ;
+    $script:ModuleVersion = (Import-PowerShellDataFile -Path (get-childitem $script:moduleroot\*.psd1).fullname).moduleversion ;
+    $runningInVsCode = $env:TERM_PROGRAM -eq 'vscode' ;
 
 #*======v FUNCTIONS v======
+
 
 
 
@@ -47,20 +49,24 @@ function cccmsCMW {Connect-CCMS -cred $credO365CMWCSID}
 
 #*------^ cccmsCMW.ps1 ^------
 
+
 #*------v cccmsTOL.ps1 v------
 function cccmsTOL {Connect-CCMS -cred $credO365TOLSID}
 
 #*------^ cccmsTOL.ps1 ^------
+
 
 #*------v cccmsTOR.ps1 v------
 function cccmsTOR {Connect-CCMS -cred $credO365TORSID}
 
 #*------^ cccmsTOR.ps1 ^------
 
+
 #*------v cccmsVEN.ps1 v------
 function cccmsVEN {Connect-CCMS -cred $credO365VENCSID}
 
 #*------^ cccmsVEN.ps1 ^------
+
 
 #*------v Connect-CCMS.ps1 v------
 Function Connect-CCMS {
@@ -311,6 +317,7 @@ Function Connect-CCMS {
 
 #*------^ Connect-CCMS.ps1 ^------
 
+
 #*------v Disconnect-CCMS.ps1 v------
 Function Disconnect-CCMS {
     <#
@@ -358,25 +365,30 @@ Function Disconnect-CCMS {
 
 #*------^ Disconnect-CCMS.ps1 ^------
 
+
 #*------v rccmsCMW.ps1 v------
 function rccmsCMW {Reconnect-CCMS -cred $credO365CMWCSID}
 
 #*------^ rccmsCMW.ps1 ^------
+
 
 #*------v rccmsTOL.ps1 v------
 function rccmsTOL {Reconnect-CCMS -cred $credO365TOLSID}
 
 #*------^ rccmsTOL.ps1 ^------
 
+
 #*------v rccmsTOR.ps1 v------
 function rccmsTOL{reconnect-CCMS -cred $credO365TOLSID}
 
 #*------^ rccmsTOR.ps1 ^------
 
+
 #*------v rccmsVEN.ps1 v------
 function rccmsVEN {Reconnect-CCMS -cred $credO365VENCSID}
 
 #*------^ rccmsVEN.ps1 ^------
+
 
 #*------v Reconnect-CCMS.ps1 v------
 Function Reconnect-CCMS {
@@ -443,7 +455,10 @@ AddedTwitter:	URL
 
 #*------^ Reconnect-CCMS.ps1 ^------
 
+
 #*======^ END FUNCTIONS ^======
 
 Export-ModuleMember -Function cccmsCMW,cccmsTOL,cccmsTOR,cccmsVEN,Connect-CCMS,Disconnect-CCMS,rccmsCMW,rccmsTOL,rccmsTOL,rccmsVEN,Reconnect-CCMS -Alias *
+
+
 

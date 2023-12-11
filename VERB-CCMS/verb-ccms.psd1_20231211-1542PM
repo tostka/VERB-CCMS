@@ -12,7 +12,7 @@
 RootModule = 'VERB-CCMS.psm1'
 
 # Version number of this module.
-ModuleVersion = '1.0.20'
+ModuleVersion = '1.0.19'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -87,7 +87,7 @@ AliasesToExport = '*'
 # ModuleList = @()
 
 # List of all files packaged with this module
-FileList = @('Quick-Start-Installation-and-Example.md','CHANGELOG.md','LICENSE.txt','README.md')
+# FileList = @()
 
 # Private data to pass to the module specified in RootModule/ModuleToProcess. This may also contain a PSData hashtable with additional module metadata used by PowerShell.
 PrivateData = @{
@@ -126,8 +126,8 @@ PrivateData = @{
 # SIG # Begin signature block
 # MIIELgYJKoZIhvcNAQcCoIIEHzCCBBsCAQExCzAJBgUrDgMCGgUAMGkGCisGAQQB
 # gjcCAQSgWzBZMDQGCisGAQQBgjcCAR4wJgIDAQAABBAfzDtgWUsITrck0sYpfvNR
-# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQU1PSXSrn196QuCjU1gmaJZHTu
-# NXGgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
+# AgEAAgEAAgEAAgEAAgEAMCEwCQYFKw4DAhoFAAQUGvJ5/5Xqvvf9Cjv81K08Fjmi
+# 27KgggI4MIICNDCCAaGgAwIBAgIQWsnStFUuSIVNR8uhNSlE6TAJBgUrDgMCHQUA
 # MCwxKjAoBgNVBAMTIVBvd2VyU2hlbGwgTG9jYWwgQ2VydGlmaWNhdGUgUm9vdDAe
 # Fw0xNDEyMjkxNzA3MzNaFw0zOTEyMzEyMzU5NTlaMBUxEzARBgNVBAMTClRvZGRT
 # ZWxmSUkwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBALqRVt7uNweTkZZ+16QG
@@ -142,9 +142,9 @@ PrivateData = @{
 # AWAwggFcAgEBMEAwLDEqMCgGA1UEAxMhUG93ZXJTaGVsbCBMb2NhbCBDZXJ0aWZp
 # Y2F0ZSBSb290AhBaydK0VS5IhU1Hy6E1KUTpMAkGBSsOAwIaBQCgeDAYBgorBgEE
 # AYI3AgEMMQowCKACgAChAoAAMBkGCSqGSIb3DQEJAzEMBgorBgEEAYI3AgEEMBwG
-# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBQCLViI
-# qfNccaH/OkLTvOzoI8/NoDANBgkqhkiG9w0BAQEFAASBgF8OltLQNAyAzIYd7V1V
-# GDQsVuOtA+lCODV8z4fSZklX8s/ns7aVEhVqq9Xn5kNiv/qovq+OIq4+PywTQ03f
-# of+MUcN4OEfTpZBM02Y+zPNlbeOqPttdlT+Bnu55StkcfiEz9PdE7TSvS7CJm6/9
-# C59ZgYlbF34uURv2Yjs3x8yl
+# CisGAQQBgjcCAQsxDjAMBgorBgEEAYI3AgEVMCMGCSqGSIb3DQEJBDEWBBSxHe3k
+# F40YA69pLinqS4D5MNc2FzANBgkqhkiG9w0BAQEFAASBgLF0UfAyNel0vGe9Q5Nm
+# 8xL0DWz/gBAp7E25dLxYOn2L/Iei6PEk34cd4BTmI0Wwv0xJgrYfKwOo5NUPNKs5
+# TVZMc0AnJkbSn+c1mx15GnlMgQmENhbRkery4ON/pIF4IuUut/F/Thsk8xZ2Gs7S
+# vNycwvYdt66qQcaa5QlGJZ3r
 # SIG # End signature block
