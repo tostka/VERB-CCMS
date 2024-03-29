@@ -16,7 +16,9 @@ Function Connect-CCMS {
     Tags        : Powershell
     AddedCredit : REFERENCE
     AddedWebsite:	URL
-    AddedTwitter:	URL    REVISIONS   :
+    AddedTwitter:	URL    
+    REVISIONS   :
+    * 8:50 AM 3/1/2024 WIP, half way through editing in EOM340 support, NOT DONE
     * 2:44 PM 3/2/2021 added console TenOrg color support
     * 7:13 AM 7/22/2020 replaced codeblock w get-TenantTag()
     * 12:18 PM 5/27/2020 updated cbh, moved alias:cccms win func
@@ -28,6 +30,22 @@ Function Connect-CCMS {
     # 12:25 PM 6/20/2018 port from cxo:     Primary diff from EXO connect is the "-ConnectionUri https://ps.compliance.protection.outlook.com/powershell-liveid/" all else is the same, repurpose connect-EXO to this
     .DESCRIPTION
     Connect-CCMS - Establish PSS to https://ps.compliance.protection.outlook.com/powershell-liveid/
+
+    revised 2/27/24: [Connect to Security & Compliance PowerShell | Microsoft Learn](https://learn.microsoft.com/en-us/powershell/exchange/connect-to-scc-powershell?view=exchange-ps)
+
+    - USES eom: 
+    Import-Module ExchangeOnlineManagement ;
+    Connect-IPPSSession -UserPrincipalName <UPN> [-ConnectionUri <URL>] [-AzureADAuthorizationEndpointUri <URL>] [-DelegatedOrganization <String>] [-PSSessionOption $ProxyOptions]
+    ## PARAMS: 
+        ENVIRO: Microsoft 365 or Microsoft 365 GCC:
+            -ConnectionUri: None. 
+                The required value https://ps.compliance.protection.outlook.com/powershell-liveid/ is also the default value, so you don't need to use the ConnectionUri parameter in Microsoft 365 or Microsoft 365 GCC environments.
+            -AzureADAuthorizationEndpointUri: None. 
+                The required value https://login.microsoftonline.com/common is also the default value, so you don't need to use the AzureADAuthorizationEndpointUri parameter in Microsoft 365 or Microsoft 365 GCC environments.
+
+
+
+
     .PARAMETER  ProxyEnabled
     Use Proxy-Aware SessionOption settings [-ProxyEnabled]
     .PARAMETER  CommandPrefix
