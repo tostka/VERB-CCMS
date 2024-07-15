@@ -18,6 +18,7 @@ AddedCredit : REFERENCE
 AddedWebsite:	URL
 AddedTwitter:	URL
     REVISIONS   :
+    # * 12:26 PM 7/15/2024 rolled into verb-exo: wholy a set of commands for EOM, not really freestanding at all; delete entire module & funcs
     * 11:20 AM 9/16/2021 string clean
     * 12:16 PM 5/27/2020 updated cbh, moved alias:rccms win func
     * 4:20 PM 5/14/2020 trimmed redundant func defs from bottom

@@ -18,6 +18,7 @@ Function Connect-CCMS {
     AddedWebsite:	URL
     AddedTwitter:	URL    
     REVISIONS   :
+    * 12:26 PM 7/15/2024 rolled into verb-exo: wholy a set of commands for EOM, not really freestanding at all; delete entire module & funcs
     * 8:50 AM 3/1/2024 WIP, half way through editing in EOM340 support, NOT DONE
     * 2:44 PM 3/2/2021 added console TenOrg color support
     * 7:13 AM 7/22/2020 replaced codeblock w get-TenantTag()

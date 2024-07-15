@@ -18,6 +18,7 @@ Function Disconnect-CCMS {
     AddedWebsite:	URL
     AddedTwitter:	URL
     REVISIONS   :
+    * 12:26 PM 7/15/2024 rolled into verb-exo: wholy a set of commands for EOM, not really freestanding at all; delete entire module & funcs
     * 2:44 PM 3/2/2021 added console TenOrg color support
     # 12:19 PM 5/27/2020 updated cbh, moved alias:dccms win func
     # 1:18 PM 11/7/2018 added Disconnect-PssBroken
