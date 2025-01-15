@@ -1,128 +1,129 @@
 ﻿# verb-CCMS.Tests.ps1
 
-<#
-.SYNOPSIS
-verb-CCMS.ps1 - verb-CCMS Pester Tests
-.NOTES
-Version     : 1.0.0
-Author      : Todd Kadrie
-Website     :	http://www.toddomation.com
-Twitter     :	@tostka / http://twitter.com/tostka
-CreatedDate : 2020-
-FileName    : verb-CCMS.Tests.ps1
-License     : MIT License
-Copyright   : (c) 2020 Todd Kadrie
-Github      : https://github.com/tostka
-Tags        : Powershell,Pester,Testing,Development
-REVISIONS
-* 9:23 AM 4/1/2020 updated to include workaround for Test-ModuleManifest failure to reload updated psd1s (uses a force loaded copy of current file), now storing the output of the import-module -force passthrugh ; also added Pester tests for: Author, CompanyName, LicenseURI, PowerShellVersion,CopyRight, !RequiredModule,!ExportedFormatFiles,Prefix,comparre missing Exported functions (to determine which unexported), more detailed checking of Exports, and check CBH for Synopsis,Description & 1+ Example (several are remmed by default)
-.DESCRIPTION
-.EXAMPLE
-cd c:\sc\verb-CCMS\ ;
-.\Tests\verb-CCMS.Tests.ps1
-.LINK
-https://github.com/tostka
-#>
+BeforeAll {
+    <#
+    .SYNOPSIS
+    verb-CCMS.ps1 - verb-CCMS Pester Tests
+    .NOTES
+    Version     : 1.0.0
+    Author      : Todd Kadrie
+    Website     :	http://www.toddomation.com
+    Twitter     :	@tostka / http://twitter.com/tostka
+    CreatedDate : 2020-
+    FileName    : verb-CCMS.Tests.ps1
+    License     : MIT License
+    Copyright   : (c) 2020 Todd Kadrie
+    Github      : https://github.com/tostka
+    Tags        : Powershell,Pester,Testing,Development
+    REVISIONS
+    * 9:23 AM 4/1/2020 updated to include workaround for Test-ModuleManifest failure to reload updated psd1s (uses a force loaded copy of current file), now storing the output of the import-module -force passthrugh ; also added Pester tests for: Author, CompanyName, LicenseURI, PowerShellVersion,CopyRight, !RequiredModule,!ExportedFormatFiles,Prefix,comparre missing Exported functions (to determine which unexported), more detailed checking of Exports, and check CBH for Synopsis,Description & 1+ Example (several are remmed by default)
+    .DESCRIPTION
+    .EXAMPLE
+    cd c:\sc\verb-CCMS\ ;
+    .\Tests\verb-CCMS.Tests.ps1
+    .LINK
+    https://github.com/tostka
+    #>
 
-[CmdletBinding()]
-PARAM() ;
-$Verbose = ($VerbosePreference -eq 'Continue') ;
+    [CmdletBinding()]
+    PARAM() ;
+    $Verbose = ($VerbosePreference -eq 'Continue') ;
 
-<#
-# patch in ISE support
-if ($psISE){
-    $ScriptDir = Split-Path -Path $psISE.CurrentFile.FullPath ;
-    $ScriptBaseName = split-path -leaf $psise.currentfile.fullpath ;
-    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($psise.currentfile.fullpath) ;
-    $PSScriptRoot = $ScriptDir ;
-    if($PSScriptRoot -ne $ScriptDir){ write-warning "UNABLE TO UPDATE BLANK `$PSScriptRoot TO CURRENT `$ScriptDir!"} ;
-    $PSCommandPath = $psise.currentfile.fullpath ;
-    if($PSCommandPath -ne $psise.currentfile.fullpath){ write-warning "UNABLE TO UPDATE BLANK `$PSCommandPath TO CURRENT `$psise.currentfile.fullpath!"} ;
-}
-#>
-if ($PSScriptRoot -eq "") {
+    <#
+    # patch in ISE support
     if ($psISE){
-        $ScriptName = $psISE.CurrentFile.FullPath ; 
-    } elseif ($context = $psEditor.GetEditorContext()) {
-        $ScriptName = $context.CurrentFile.Path ;  
-    } elseif($host.version.major -lt 3){
-        $ScriptName = $MyInvocation.MyCommand.Path ; 
-        $PSScriptRoot = Split-Path $ScriptName -Parent ;
-        $PSCommandPath = $ScriptName ;
-    } else {
-        if($MyInvocation.MyCommand.Path) {
+        $ScriptDir = Split-Path -Path $psISE.CurrentFile.FullPath ;
+        $ScriptBaseName = split-path -leaf $psise.currentfile.fullpath ;
+        $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($psise.currentfile.fullpath) ;
+        $PSScriptRoot = $ScriptDir ;
+        if($PSScriptRoot -ne $ScriptDir){ write-warning "UNABLE TO UPDATE BLANK `$PSScriptRoot TO CURRENT `$ScriptDir!"} ;
+        $PSCommandPath = $psise.currentfile.fullpath ;
+        if($PSCommandPath -ne $psise.currentfile.fullpath){ write-warning "UNABLE TO UPDATE BLANK `$PSCommandPath TO CURRENT `$psise.currentfile.fullpath!"} ;
+    }
+    #>
+    if ($PSScriptRoot -eq "") {
+        if ($psISE){
+            $ScriptName = $psISE.CurrentFile.FullPath ; 
+        } elseif ($context = $psEditor.GetEditorContext()) {
+            $ScriptName = $context.CurrentFile.Path ;  
+        } elseif($host.version.major -lt 3){
             $ScriptName = $MyInvocation.MyCommand.Path ; 
-            $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent ;
+            $PSScriptRoot = Split-Path $ScriptName -Parent ;
+            $PSCommandPath = $ScriptName ;
         } else {
-            throw "UNABLE TO POPULATE SCRIPT PATH, EVEN `$MyInvocation IS BLANK!" ;
-        } ;
-    }; 
-    $ScriptDir = Split-Path -Parent $ScriptName ; 
-    $ScriptBaseName = split-path -leaf $ScriptName ;
-    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($ScriptName) ;
-} else {
-    $ScriptDir = $PSScriptRoot ;
-    if($PSCommandPath){
-        $ScriptName = $PSCommandPath ; 
+            if($MyInvocation.MyCommand.Path) {
+                $ScriptName = $MyInvocation.MyCommand.Path ; 
+                $PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent ;
+            } else {
+                throw "UNABLE TO POPULATE SCRIPT PATH, EVEN `$MyInvocation IS BLANK!" ;
+            } ;
+        }; 
+        $ScriptDir = Split-Path -Parent $ScriptName ; 
+        $ScriptBaseName = split-path -leaf $ScriptName ;
+        $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($ScriptName) ;
     } else {
-        $ScriptName = $myInvocation.ScriptName
-        $PSCommandPath = $ScriptName ;
-    } ;
-    $ScriptBaseName = (Split-Path -Leaf ((&{$myInvocation}).ScriptName))  ;
-    $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($MyInvocation.InvocationName) ;
-} ; 
+        $ScriptDir = $PSScriptRoot ;
+        if($PSCommandPath){
+            $ScriptName = $PSCommandPath ; 
+        } else {
+            $ScriptName = $myInvocation.ScriptName
+            $PSCommandPath = $ScriptName ;
+        } ;
+        $ScriptBaseName = (Split-Path -Leaf ((&{$myInvocation}).ScriptName))  ;
+        $ScriptNameNoExt = [system.io.path]::GetFilenameWithoutExtension($MyInvocation.InvocationName) ;
+    } ; 
 
 
-$ModuleName = Split-Path (Resolve-Path "$ScriptDir\..\" ) -Leaf ; 
-$ModuleManifest = (Resolve-Path "$ScriptDir\..\$ModuleName\$ModuleName.psd1").path ; 
-# work around 'never-reloads' bug in Test-ModuleManifest, by force-loading a fresh hash of *curr* manifest, for use in all but *initial* TMM tests
-$Script:ManifestHash = Invoke-Expression (Get-Content $ModuleManifest -Raw)
-$ProjectRoot = (Resolve-path "$ScriptDir\..\").path ; 
-if(!(test-path $ProjectRoot\README.md)){
-    throw "Unable to resolve ProjectRoot!" ;
-}
-$moduleComponents = Get-ChildItem $ProjectRoot  -Include *.psd1, *.psm1, *.ps1 -Exclude *.tests.ps1,PPoShScriptingStyle.psd1 -Recurse
-$projectScripts = $moduleComponents | ?{$_.extension -eq '.ps1'} | sort name ;
-$projectModules = $moduleComponents | ?{$_.extension -eq '.psm1'} | sort name ;
-$projectDatafiles = $moduleComponents | ?{$_.extension -eq '.psd1'} | sort name ;
-# enable to suit pref
-#$scriptStylePath = (Resolve-Path "$ProjectRoot\Tests\PPoShScriptingStyle.psd1").path ;
-$scriptStylePath = (Resolve-Path "$ProjectRoot\Tests\ToddomationScriptingStyle-medium.psd1").path ;
+    $ModuleName = Split-Path (Resolve-Path "$ScriptDir\..\" ) -Leaf ; 
+    $ModuleManifest = (Resolve-Path "$ScriptDir\..\$ModuleName\$ModuleName.psd1").path ; 
+    # work around 'never-reloads' bug in Test-ModuleManifest, by force-loading a fresh hash of *curr* manifest, for use in all but *initial* TMM tests
+    $Script:ManifestHash = Invoke-Expression (Get-Content $ModuleManifest -Raw)
+    $ProjectRoot = (Resolve-path "$ScriptDir\..\").path ; 
+    if(!(test-path $ProjectRoot\README.md)){
+        throw "Unable to resolve ProjectRoot!" ;
+    }
+    $moduleComponents = Get-ChildItem $ProjectRoot  -Include *.psd1, *.psm1, *.ps1 -Exclude *.tests.ps1,PPoShScriptingStyle.psd1 -Recurse
+    $projectScripts = $moduleComponents | ?{$_.extension -eq '.ps1'} | sort name ;
+    $projectModules = $moduleComponents | ?{$_.extension -eq '.psm1'} | sort name ;
+    $projectDatafiles = $moduleComponents | ?{$_.extension -eq '.psd1'} | sort name ;
+    # enable to suit pref
+    #$scriptStylePath = (Resolve-Path "$ProjectRoot\Tests\PPoShScriptingStyle.psd1").path ;
+    $scriptStylePath = (Resolve-Path "$ProjectRoot\Tests\ToddomationScriptingStyle-medium.psd1").path ;
 
-$smsg=@"
+    $smsg=@"
 
-    ==Current Config:
-    `$ModuleName:$ModuleName
-    `$ProjectRoot :$ProjectRoot
-    `$ModuleManifest:$ModuleManifest
-    `$scriptStylePath:$scriptStylePath
+        ==Current Config:
+        `$ModuleName:$ModuleName
+        `$ProjectRoot :$ProjectRoot
+        `$ModuleManifest:$ModuleManifest
+        `$scriptStylePath:$scriptStylePath
 
-    `$moduleComponents:
-    $(($moduleComponents.fullname|ft -a | out-string).trim())" ;
+        `$moduleComponents:
+        $(($moduleComponents.fullname|ft -a | out-string).trim())" ;
 
-    `$projectScripts:
-    $(($projectScripts.fullname|ft -a | out-string).trim())" ;
+        `$projectScripts:
+        $(($projectScripts.fullname|ft -a | out-string).trim())" ;
 
-    `$projectModules:
-    $(($projectModules.fullname|ft -a | out-string).trim())" ;
+        `$projectModules:
+        $(($projectModules.fullname|ft -a | out-string).trim())" ;
 
-    `$projectDatafiles:
-    $(($projectDatafiles.fullname|ft -a | out-string).trim())" ;
+        `$projectDatafiles:
+        $(($projectDatafiles.fullname|ft -a | out-string).trim())" ;
 
 "@ ;
-write-verbose -verbose:$verbose $smsg ;
+    write-verbose -verbose:$verbose $smsg ;
 
-# Force Import the module and store the information about the module
-Get-Module $ModuleName | Remove-Module
-$ModuleInformation = Import-Module $ModuleManifest -Force -PassThru ; 
-
+    # Force Import the module and store the information about the module
+    Get-Module $ModuleName | Remove-Module
+    $ModuleInformation = Import-Module $ModuleManifest -Force -PassThru ; 
+}
 
 Describe 'Module Information' -Tags 'Command'{
     Context 'Manifest Testing' {
         It 'Valid Module Manifest' {
             {
                 $Script:Manifest = Test-ModuleManifest -Path $ModuleManifest -ErrorAction Stop -WarningAction SilentlyContinue
-            } | Should Not Throw
+            } | Should -Not -Throw
         }
         # Name & Version are not values in psd1 - they're *asserted* by TMM, don't use the hash for these tests
         It 'Valid Manifest Name' {
@@ -137,13 +138,13 @@ Describe 'Module Information' -Tags 'Command'{
         }
         #>
         It "Valid Author"{
-            $Script:ManifestHash.Author | Should not BeNullOrEmpty
+            $Script:ManifestHash.Author | Should -not -BeNullOrEmpty
         }
         It "Valid Company Name"{
-            $Script:ManifestHash.CompanyName | Should not BeNullOrEmpty
+            $Script:ManifestHash.CompanyName | Should -not -BeNullOrEmpty
         }
         It "Valid License"{
-            $ModuleInformation.LicenseURI | Should not BeNullOrEmpty
+            $ModuleInformation.LicenseURI | Should -not -BeNullOrEmpty
         }
         <#
         It "has a valid copyright" {
@@ -171,7 +172,7 @@ Describe 'Module Information' -Tags 'Command'{
         #>
         # added from https://powershell.getchell.org/2016/05/16/generic-pester-tests/
         It 'Required Modules' {
-            $Script:ManifestHash.RequiredModules | Should BeNullOrEmpty
+            $Script:ManifestHash.RequiredModules | Should -BeNullOrEmpty
         }
         
         <# extra mani tests:
@@ -203,7 +204,7 @@ Describe 'Module Information' -Tags 'Command'{
             write-verbose -verbose:$verbose $smsg ;
             
 
-            $ExportedCount | Should be $FileCount
+            $ExportedCount | Should -be $FileCount
         }
         
         # another approach
@@ -213,7 +214,7 @@ Describe 'Module Information' -Tags 'Command'{
                 Select-Object -ExpandProperty BaseName
             $FunctionNames = $FunctionFiles
             foreach ($FunctionName in $FunctionNames){
-                $ExFunctions -contains $FunctionName | Should Be $true
+                $ExFunctions -contains $FunctionName | Should -Be $true
             }
         }
         # https://lazywinadmin.com/2016/05/using-pester-to-test-your-manifest-file.html
@@ -221,7 +222,7 @@ Describe 'Module Information' -Tags 'Command'{
             if (-not ($ExportedCount -eq $FileCount))
             {
                 $Compare = Compare-Object -ReferenceObject $ExFunctions -DifferenceObject $FunctionFiles
-                $Compare.inputobject -join ',' | Should BeNullOrEmpty
+                $Compare.inputobject -join ',' | Should -BeNullOrEmpty
             }
         }
         
@@ -237,14 +238,14 @@ Get-Command -Module $ModuleName | ForEach-Object {
     Describe 'Help' -Tags 'Help' {
         Context "Function - $_" { 
             It 'Synopsis' {
-                Get-Help $_ | Select-Object -ExpandProperty synopsis | should not benullorempty
+                Get-Help $_ | Select-Object -ExpandProperty synopsis | should -not -benullorempty
             }
             It 'Description' {
-                Get-Help $_ | Select-Object -ExpandProperty Description | should not benullorempty
+                Get-Help $_ | Select-Object -ExpandProperty Description | should -not -benullorempty
             }
             It 'Examples' {
                 $Examples = Get-Help $_ | Select-Object -ExpandProperty Examples | Measure-Object 
-                $Examples.Count -gt 0 | Should be $true
+                $Examples.Count -gt 0 | Should -be $true
             }
         }
     }
@@ -253,10 +254,10 @@ Get-Command -Module $ModuleName | ForEach-Object {
 Describe 'General - Testing all scripts and modules against the Script Analyzer Rules' {
     Context "Checking files to test exist and Invoke-ScriptAnalyzer cmdLet is available" {
         It "Checking files exist to test." {
-            $moduleComponents.count | Should Not Be 0
+            $moduleComponents.count | Should -Not -Be 0
         }
         It "Checking Invoke-ScriptAnalyzer exists." {
-            { Get-Command Invoke-ScriptAnalyzer -ErrorAction Stop } | Should Not Throw
+            { Get-Command Invoke-ScriptAnalyzer -ErrorAction Stop } | Should -Not -Throw
         }
     }
 } 
@@ -307,7 +308,7 @@ Describe -Tags 'PSSA' -Name 'Testing against PSScriptAnalyzer rules' {
             #>
             It "Should pass $Rule" -Skip:$Skip {
                 $Failures = $AnalyzerIssues | Where-Object -Property RuleName -EQ -Value $rule
-                ($Failures | Measure-Object).Count | Should Be 0
+                ($Failures | Measure-Object).Count | Should -Be 0
             }
         }
     }
